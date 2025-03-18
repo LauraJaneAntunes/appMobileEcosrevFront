@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator, DrawerItemList } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { View } from "react-native";
 import { House, ArrowRightLeft, History, UserCog, Info } from "lucide-react-native";
+import LoadingScreen from "./src/screens/LoadingScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import BeneficiosScreen from "./src/screens/BenefitsScreen";
 import HistoricoScreen from "./src/screens/HistoryScreen";
@@ -95,58 +96,73 @@ const CustomDrawerContent = (props) => (
 
 // Drawer Navigator como ponto principal de navegação
 export default function App() {
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  useEffect(() => {
+    // Simula um atraso de carregamento de 3 segundos antes de navegar para a home
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000); // 3 segundos de delay
+  }, []);
+
   return (
     <NavigationContainer>
-      <Drawer.Navigator
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
-        screenOptions={{ header: () => <Header /> }}
-        initialRouteName="Home"
-      >
-        <Drawer.Screen
-          name="Home"
-          component={HomeStack}
-          options={{
-            title: "Início",
-            drawerIcon: () => <House size={20} />,
-          }}
-        />
-        <Drawer.Screen
-          name="Perfil"
-          component={PerfilScreen}
-          options={{
-            drawerIcon: () => <UserCog size={20} />,
-          }}
-        />
-        <Drawer.Screen
-          name="Troca"
-          component={BeneficiosScreen}
-          options={{
-            drawerIcon: () => <ArrowRightLeft size={20} />,
-          }}
-        />
-        <Drawer.Screen
-          name="Historico"
-          component={HistoricoScreen}
-          options={{
-            title: "Histórico",
-            drawerIcon: () => <History size={20} />,
-          }}
-        />
-        <Drawer.Screen
-          name="Sobre"
-          component={SobreScreen}
-          options={{
-            drawerIcon: () => <Info size={20} />,
-          }}
-        />
-        <Drawer.Screen
-          name="Configurações"
-          component={ConfigScreen}
-          options={{
-            drawerIcon: () => <UserCog size={20} />,
-          }}
-        />
-      </Drawer.Navigator>
+      {isLoading ? (
+        // Exibe a tela de carregamento enquanto a variável isLoading for verdadeira
+        <LoadingScreen />
+      ) : (
+        // Após o carregamento, exibe o Drawer Navigator
+        <Drawer.Navigator
+          drawerContent={(props) => <CustomDrawerContent {...props} />}
+          screenOptions={{ header: () => <Header /> }}
+          initialRouteName="Home"
+        >
+          <Drawer.Screen
+            name="Home"
+            component={HomeStack}
+            options={{
+              title: "Início",
+              drawerIcon: () => <House size={20} />,
+            }}
+          />
+          <Drawer.Screen
+            name="Perfil"
+            component={PerfilScreen}
+            options={{
+              drawerIcon: () => <UserCog size={20} />,
+            }}
+          />
+          <Drawer.Screen
+            name="Troca"
+            component={BeneficiosScreen}
+            options={{
+              drawerIcon: () => <ArrowRightLeft size={20} />,
+            }}
+          />
+          <Drawer.Screen
+            name="Historico"
+            component={HistoricoScreen}
+            options={{
+              title: "Histórico",
+              drawerIcon: () => <History size={20} />,
+            }}
+          />
+          <Drawer.Screen
+            name="Sobre"
+            component={SobreScreen}
+            options={{
+              drawerIcon: () => <Info size={20} />,
+            }}
+          />
+          <Drawer.Screen
+            name="Configurações"
+            component={ConfigScreen}
+            options={{
+              drawerIcon: () => <UserCog size={20} />,
+            }}
+          />
+        </Drawer.Navigator>
+      )}
     </NavigationContainer>
   );
 }
