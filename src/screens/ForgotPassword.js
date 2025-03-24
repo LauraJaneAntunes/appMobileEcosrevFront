@@ -16,7 +16,7 @@ export default function ForgotPassword() {
   const [feedback, setFeedback] = useState(null);
 
   const handleResetPassword = (values) => {
-    // Simulação de chamada à API - IMPLEMENTAR BACKEND
+    // Simulação de chamada à API - IMPLEMENTAR LÓGICA DE BACKEND
     setTimeout(() => {
       console.log('Solicitação de recuperação de senha enviada para:', values.email);
       setFeedback({

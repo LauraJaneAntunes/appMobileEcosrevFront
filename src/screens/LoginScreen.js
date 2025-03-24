@@ -23,7 +23,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = (values) => {
-    // IMPLEMENTAR LÓGICA BACKEND
+    // IMPLEMENTAR LÓGICA DE BACKEND
     console.log('Login:', values);
   };
 
