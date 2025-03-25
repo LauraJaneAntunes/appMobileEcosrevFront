@@ -1,48 +1,62 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
-import { Camera } from 'expo-camera';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { Text, View, StyleSheet, Button, Alert } from 'react-native';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 
 export default function QRCodeScanner() {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
+    if (!permission?.granted) {
+      requestPermission();
+    }
+  }, [permission]);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  if (!permission) {
+    // Camera permissions are still loading
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: 'center' }}>
+          Precisamos de permissão para usar a câmera
+        </Text>
+        <Button onPress={requestPermission} title="Permitir Câmera" />
+      </View>
+    );
+  }
+
+  const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
-    alert(`Código de barras do tipo ${type} e dados ${data} foi escaneado!`);
+    Alert.alert(
+      'QR Code Escaneado', 
+      `Dados: ${data}`,
+      [{ 
+        text: 'OK', 
+        onPress: () => setScanned(false) 
+      }]
+    );
   };
-
-  if (hasPermission === null) {
-    return <View><Text>Solicitando permissão de câmera</Text></View>;
-  }
-  if (hasPermission === false) {
-    return <View><Text>Sem acesso à câmera</Text></View>;
-  }
 
   return (
     <View style={styles.container}>
-      <Camera
+      <CameraView
         style={styles.camera}
-        type={Camera.Constants.Type.back}
+        facing="back"
         barCodeScannerSettings={{
-          barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+          barcodeTypes: ["qr"]
         }}
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
       >
         <View style={styles.overlay}>
-          <Text style={styles.overlayText}>Posicione o QR Code dentro da área</Text>
+          <Text style={styles.overlayText}>
+            Posicione o QR Code dentro da área
+          </Text>
         </View>
-      </Camera>
-      {scanned && (
-        <Button title="Escanear novamente" onPress={() => setScanned(false)} />
-      )}
+      </CameraView>
     </View>
   );
 }
@@ -50,14 +64,16 @@ export default function QRCodeScanner() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   camera: {
-    flex: 1,
+    width: '100%', 
+    height: '100%',
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
