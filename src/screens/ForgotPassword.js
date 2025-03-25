@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useState } from 'react';
@@ -12,7 +12,7 @@ const ForgotPasswordSchema = Yup.object().shape({
 });
 
 export default function ForgotPassword() {
-  const router = useRouter();
+  const navigation = useNavigation();
   const [feedback, setFeedback] = useState(null);
 
   const handleResetPassword = (values) => {
@@ -63,7 +63,7 @@ export default function ForgotPassword() {
               </Text>
             )}
 
-            <TouchableOpacity onPress={() => router.push('/(auth)/login')} style={styles.link}>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.link}>
               <Text style={styles.linkText}>Voltar para o login</Text>
             </TouchableOpacity>
           </View>

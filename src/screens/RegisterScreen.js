@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Eye, EyeOff } from 'lucide-react-native';
@@ -22,7 +22,7 @@ const RegisterSchema = Yup.object().shape({
 });
 
 export default function Register() {
-  const router = useRouter();
+  const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleRegister = (values) => {
@@ -99,7 +99,7 @@ export default function Register() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => router.push('/(auth)/login')}
+              onPress={() => navigation.navigate('Login')}
               style={styles.link}
             >
               <Text style={styles.linkText}>Já tem uma conta? Faça login</Text>

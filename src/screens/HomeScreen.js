@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const HomeScreen = () => {
-  const router = useRouter();
+  const navigation = useNavigation();
 
   return (
     <LinearGradient
@@ -18,7 +18,7 @@ const HomeScreen = () => {
         </Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => router.push('/(auth)/login')}
+          onPress={() => navigation.navigate('Login')}
         >
           <Text style={styles.buttonText}>Começar Agora</Text>
         </TouchableOpacity>

@@ -4,7 +4,7 @@ import { createDrawerNavigator, DrawerItemList } from "@react-navigation/drawer"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { View } from "react-native";
-import { House, ArrowRightLeft, History, UserCog, Info } from "lucide-react-native";
+import { House, ArrowRightLeft, History, UserCog, Info, QrCode } from "lucide-react-native";
 
 import LoadingScreen from "./src/screens/LoadingScreen";
 import HomeScreen from "./src/screens/HomeScreen";
@@ -13,6 +13,7 @@ import HistoricoScreen from "./src/screens/HistoryScreen";
 import SobreScreen from "./src/screens/AboutScreen";
 import PerfilScreen from "./src/screens/ProfileScreen";
 import ConfigScreen from "./src/screens/ConfigScreen";
+import QRCodeScannerScreen from "./src/screens/QRCodeScannerScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import ForgotPasswordScreen from "./src/screens/ForgotPassword";
@@ -64,6 +65,7 @@ function AppStack() {
       <Drawer.Screen name="Home" component={TabScreens} options={{ title: "Início", drawerIcon: () => <House size={20} /> }} />
       <Drawer.Screen name="Perfil" component={PerfilScreen} options={{ drawerIcon: () => <UserCog size={20} /> }} />
       <Drawer.Screen name="Troca" component={BeneficiosScreen} options={{ drawerIcon: () => <ArrowRightLeft size={20} /> }} />
+      <Drawer.Screen name="QrCode" component={QRCodeScannerScreen} options={{ drawerIcon: () => <QrCode size={20} /> }} />
       <Drawer.Screen name="Historico" component={HistoricoScreen} options={{ title: "Histórico", drawerIcon: () => <History size={20} /> }} />
       <Drawer.Screen name="Sobre" component={SobreScreen} options={{ drawerIcon: () => <Info size={20} /> }} />
       <Drawer.Screen name="Configurações" component={ConfigScreen} options={{ drawerIcon: () => <UserCog size={20} /> }} />
@@ -73,7 +75,7 @@ function AppStack() {
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Simula autenticação - IMPLEMENTAR LÓGICA DE BACKEND
+  const [isAuthenticated, setIsAuthenticated] = useState(true); // Simula autenticação - IMPLEMENTAR LÓGICA DE BACKEND
 
   useEffect(() => {
     setTimeout(() => {
