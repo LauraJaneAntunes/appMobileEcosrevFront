@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import Svg, { Circle } from 'react-native-svg';
+import Svg, { Circle, Text as SvgText } from 'react-native-svg';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 
 // Componente para a parte ilustrada do logo que vai girar
@@ -61,40 +61,61 @@ export default function LoadingScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        {/* Parte ilustrada girando */}
-        <AnimatedSvg
-          width={100}
-          height={100}
-          viewBox="0 0 100 100"
-          style={[styles.logoSvg, animatedStyle]}
-        >
-          {/* Pontos formando o C externo */}
-          {outerCDots.map((dot, index) => (
-            <Circle
-              key={`outer-${index}`}
-              cx={dot.x}
-              cy={dot.y}
-              r={dot.r}
-              fill="#A7DF30"
-            />
-          ))}
-          
-          {/* Pontos formando o C interno */}
-          {innerCDots.map((dot, index) => (
-            <Circle
-              key={`inner-${index}`}
-              cx={dot.x}
-              cy={dot.y}
-              r={dot.r}
-              fill="#A7DF30"
-            />
-          ))}
-        </AnimatedSvg>
+        {/* Parte do SVG animado */}
+        <View style={styles.svgWrapper}>
+          <AnimatedSvg
+            width={100}
+            height={100}
+            viewBox="0 0 100 100"
+            style={[styles.logoSvg, animatedStyle]}
+          >
+            {/* Pontos formando o C externo */}
+            {outerCDots.map((dot, index) => (
+              <Circle
+                key={`outer-${index}`}
+                cx={dot.x}
+                cy={dot.y}
+                r={dot.r}
+                fill="#a3e619"
+              />
+            ))}
+            
+            {/* Pontos formando o C interno */}
+            {innerCDots.map((dot, index) => (
+              <Circle
+                key={`inner-${index}`}
+                cx={dot.x}
+                cy={dot.y}
+                r={dot.r}
+                fill="#a8c35f"
+              />
+            ))}
+          </AnimatedSvg>
+
+          {/* E estático sobreposto */}
+          <Svg 
+            width={100} 
+            height={100} 
+            viewBox="0 0 100 100" 
+            style={styles.staticE}
+          >
+            <SvgText
+              x="50"
+              y="60"
+              textAnchor="middle"
+              fontSize="25"
+              fontWeight="bold"
+              fill="#525050"
+            >
+              E
+            </SvgText>
+          </Svg>
+        </View>
         
         {/* Parte textual estática */}
-        <View style={styles.textContainer}>
+        {/* <View style={styles.textContainer}>
           <Text style={styles.logoText}>EcosRev</Text>
-        </View>
+        </View> */}
       </View>
     </View>
   );
@@ -111,9 +132,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  logoSvg: {
+  svgWrapper: {
+    position: 'relative',
     width: 100,
     height: 100,
+  },
+  logoSvg: {
+    position: 'absolute',
+    width: 100,
+    height: 100,
+  },
+  staticE: {
+    position: 'absolute',
+    width: 100,
+    height: 100,
+    top: 0,
+    left: 0,
   },
   textContainer: {
     marginLeft: 10,
