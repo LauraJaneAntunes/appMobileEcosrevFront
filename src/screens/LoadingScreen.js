@@ -17,7 +17,7 @@ export default function LoadingScreen() {
     // Inicia a animação de rotação no sentido horário (para a direita)
     rotation.value = withRepeat(
       withTiming(360, { 
-        duration: 2000, 
+        duration: 3000, 
         easing: Easing.linear 
       }),
       -1, // -1 significa repetir infinitamente
@@ -100,8 +100,8 @@ export default function LoadingScreen() {
             style={styles.staticE}
           >
             <SvgText
-              x="50"
-              y="60"
+              x="50" // Centralizar o E eixo x
+              y="60" // Centralizar o E eixo y
               textAnchor="middle"
               fontSize="25"
               fontWeight="bold"
