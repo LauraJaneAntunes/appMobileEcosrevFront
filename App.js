@@ -1,10 +1,12 @@
+//App.js
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator, DrawerItemList } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
-import { useTheme } from './src/utils/theme';
+import { ThemeProvider } from "./src/contexts/ThemeContext";
+import { useTheme } from "./src/contexts/ThemeContext";
 import { View } from "react-native";
 import { House, ArrowRightLeft, History, UserCog, Info, QrCode } from "lucide-react-native";
 
@@ -89,7 +91,9 @@ function MainApp() {
 export default function App() {
   return (
     <AuthProvider>
-      <MainApp />
+      <ThemeProvider>
+        <MainApp />
+      </ThemeProvider>
     </AuthProvider>
   );
 }

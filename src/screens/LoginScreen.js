@@ -14,7 +14,7 @@ const LoginSchema = Yup.object().shape({
     .min(6, 'Senha deve ter no mínimo 6 caracteres')
     .matches(/[A-Z]/, 'Senha deve conter pelo menos uma letra maiúscula')
     .matches(/[0-9]/, 'Senha deve conter pelo menos um número')
-    .matches(/[!@#$%^&*]/, 'Senha deve conter pelo menos um caractere especial')
+    .matches(/[!@#$%^&*_]/, 'Senha deve conter pelo menos um caractere especial')
     .required('Senha é obrigatória'),
 });
 
