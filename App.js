@@ -21,7 +21,7 @@ import QRCodeScannerScreen from "./src/screens/QRCodeScannerScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import ForgotPasswordScreen from "./src/screens/ForgotPassword";
-import BottomNavigation from "./src/components/bottom-navigation";
+import BottomNavigation from "./src/components/BottomNavigation";
 import Header from "./src/components/header";
 import LogoutButton from "./src/components/LogoutButton";
 
