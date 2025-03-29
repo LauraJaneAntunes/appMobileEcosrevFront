@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator, DrawerItemList } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+import { useTheme } from './src/utils/theme';
 import { View } from "react-native";
 import { House, ArrowRightLeft, History, UserCog, Info, QrCode } from "lucide-react-native";
 
@@ -74,6 +75,7 @@ function AppStack() {
 }
 
 export default function App() {
+  const theme = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(true); // Simula autenticação - IMPLEMENTAR LÓGICA DE BACKEND
 
@@ -84,7 +86,7 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={theme}>
       {isLoading ? <LoadingScreen /> : isAuthenticated ? <AppStack /> : <AuthStack />}
     </NavigationContainer>
   );
