@@ -1,13 +1,10 @@
+//src/screens/BenefitsScreen.js
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { Gift, Ticket } from "lucide-react-native";
+import { useTheme } from "../contexts/ThemeContext";
+import { useFontSettings } from "../contexts/FontContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const benefitsData = [
   {
@@ -38,6 +35,8 @@ const benefitsData = [
 
 const BenefitsScreen = () => {
   const [userPoints, setUserPoints] = useState(2500);
+  const theme = useTheme();
+  const { fontSize } = useFontSettings();
 
   const handleRedeemBenefit = (benefit) => {
     if (userPoints >= benefit.points) {
@@ -64,42 +63,64 @@ const BenefitsScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      
+      <View style={[styles.headerContainer, { backgroundColor: theme.colors.surface }]}>
         <View style={styles.pointsHeader}>
-          <Gift color="#4CAF50" size={24} />
-          <Text style={styles.pointsText}>Seus Pontos: {userPoints}</Text>
+          <Gift color={theme.colors.primary} size={24} />
+          <Text style={[styles.pointsText, { color: theme.colors.text.primary, fontSize: fontSize.lg }]}>
+            Seus Pontos: 
+          </Text>
+          <Text style={[styles.pointsText, { color: theme.colors.info, fontSize: fontSize.lg }]}>
+            {userPoints}
+          </Text>
         </View>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={[styles.scrollViewContent, { marginTop: 10 }]}
+        showsVerticalScrollIndicator={false}
+      >
         {benefitsData.map((benefit) => (
-          <TouchableOpacity key={benefit.id} style={styles.benefitCard} onPress={() => handleRedeemBenefit(benefit)}>
+          <TouchableOpacity
+            key={benefit.id}
+            style={[styles.benefitCard, { backgroundColor: theme.colors.surface }]}
+            onPress={() => handleRedeemBenefit(benefit)}
+          >
             <View style={styles.benefitDetails}>
-              <Text style={styles.benefitTitle}>{benefit.title}</Text>
-              <Text style={styles.benefitDescription}>{benefit.description}</Text>
+              <Text style={[styles.benefitTitle, { color: theme.colors.text.primary, fontSize: fontSize.md }]}>
+                {benefit.title}
+              </Text>
+              <Text style={[styles.benefitDescription, { color: theme.colors.text.secondary, fontSize: fontSize.sm }]}>
+                {benefit.description}
+              </Text>
               <View style={styles.pointsContainer}>
-                <Ticket color="#2196F3" size={20} />
-                <Text style={styles.benefitPoints}>{benefit.points} pontos</Text>
+                <Ticket color={theme.colors.info} size={20} />
+                <Text style={[styles.benefitPoints, { color: theme.colors.info, fontWeight: "bold", fontSize: fontSize.sm }]}>
+                  {benefit.points} pontos
+                </Text>
               </View>
             </View>
-            <TouchableOpacity style={styles.redeemButton} onPress={() => handleRedeemBenefit(benefit)}>
-              <Text style={styles.redeemButtonText}>Resgatar</Text>
+            <TouchableOpacity
+              style={[styles.redeemButton, { backgroundColor: theme.colors.primary }]}
+              onPress={() => handleRedeemBenefit(benefit)}
+            >
+              <Text style={[styles.redeemButtonText, { color: theme.colors.text.inverse, fontWeight: "bold", fontSize: fontSize.sm }]}>
+                Resgatar
+              </Text>
             </TouchableOpacity>
           </TouchableOpacity>
         ))}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
   },
   headerContainer: {
-    backgroundColor: "#FFFFFF",
     paddingVertical: 15,
     paddingHorizontal: 20,
   },
@@ -110,16 +131,13 @@ const styles = StyleSheet.create({
   },
   pointsText: {
     marginLeft: 10,
-    fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
   },
   scrollViewContent: {
     paddingVertical: 20,
     paddingHorizontal: 15,
   },
   benefitCard: {
-    backgroundColor: "#FFFFFF",
     borderRadius: 10,
     marginBottom: 15,
     flexDirection: "row",
@@ -130,13 +148,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   benefitTitle: {
-    fontSize: 16,
     fontWeight: "bold",
-    color: "#333",
   },
   benefitDescription: {
-    fontSize: 14,
-    color: "#666",
     marginTop: 5,
   },
   pointsContainer: {
@@ -146,20 +160,15 @@ const styles = StyleSheet.create({
   },
   benefitPoints: {
     marginLeft: 5,
-    fontSize: 14,
-    color: "#2196F3",
     fontWeight: "bold",
   },
   redeemButton: {
-    backgroundColor: "#4CAF50",
     paddingVertical: 8,
     paddingHorizontal: 15,
     borderRadius: 5,
   },
   redeemButtonText: {
-    color: "#FFFFFF",
     fontWeight: "bold",
-    fontSize: 14,
   },
 });
 

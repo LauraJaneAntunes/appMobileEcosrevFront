@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Image, Text, StyleSheet, Dimensions, FlatList, Animated } from 'react-native';
+import { useTheme } from "../contexts/ThemeContext";
+import { useFontSettings } from "../contexts/FontContext";
 
 const { width } = Dimensions.get('window');
 
@@ -7,6 +9,9 @@ const Carousel = ({ slides }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef(null);
   const scrollX = useRef(new Animated.Value(0)).current;
+
+  const theme = useTheme();
+  const { fontSize } = useFontSettings();
 
   // Auto scroll
   useEffect(() => {
@@ -35,8 +40,20 @@ const Carousel = ({ slides }) => {
           style={styles.image}
           resizeMode="cover"
         />
-        <View style={styles.captionContainer}>
-          <Text style={styles.caption}>{item.caption}</Text>
+        <View
+          style={[
+            styles.captionContainer,
+            { backgroundColor: theme.colors.overlay },
+          ]}
+        >
+          <Text
+            style={[
+              styles.caption,
+              { fontSize: fontSize.md, color: theme.colors.text.secondary, fontWeight: 'bold' },
+            ]}
+          >
+            {item.caption}
+          </Text>
         </View>
       </View>
     );
@@ -89,12 +106,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     padding: 15,
   },
   caption: {
-    color: 'white',
-    fontSize: 16,
     textAlign: 'center',
   },
 });

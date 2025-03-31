@@ -1,66 +1,81 @@
+//src\screens\AboutScreen.js
 import React from "react";
 import { StyleSheet, Text, View, ScrollView, Linking } from "react-native";
+import { useTheme } from "../contexts/ThemeContext";
+import { useFontSettings } from "../contexts/FontContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const AboutScreen = () => {
+  const theme = useTheme();
+  const { fontSize } = useFontSettings();
+
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: theme.colors.background }]}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.sectionContainer} testID="mission-section">
-          <Text style={styles.sectionTitle} testID="mission-title">Nossa Missão</Text>
-          <Text style={styles.sectionText} testID="mission-text">
-            O EcoSrev é uma plataforma inovadora dedicada à reciclagem responsável 
-            de resíduos eletrônicos, transformando consciência ambiental em ação 
+        {/* Missão */}
+        <View style={[styles.sectionContainer, { backgroundColor: theme.colors.surface }]} testID="mission-section">
+          <Text style={[styles.sectionTitle, { color: theme.colors.primary, fontSize: fontSize.lg }]} testID="mission-title">Nossa Missão</Text>
+          <Text style={[styles.sectionText, { color: theme.colors.text.primary, fontSize: fontSize.md }]} testID="mission-text">
+            O EcoSrev é uma plataforma inovadora dedicada à reciclagem responsável
+            de resíduos eletrônicos, transformando consciência ambiental em ação
             concreta e recompensas tangíveis.
           </Text>
         </View>
 
-        <View style={styles.sectionContainer} testID="origin-section">
-          <Text style={styles.sectionTitle} testID="origin-title">Origem do Projeto</Text>
-          <Text style={styles.sectionText} testID="origin-text">
+        {/* Origem do Projeto */}
+        <View style={[styles.sectionContainer, { backgroundColor: theme.colors.surface }]} testID="origin-section">
+          <Text style={[styles.sectionTitle, { color: theme.colors.primary, fontSize: fontSize.lg }]} testID="origin-title">Origem do Projeto</Text>
+          <Text style={[styles.sectionText, { color: theme.colors.text.primary, fontSize: fontSize.md }]} testID="origin-text">
             Desenvolvido como projeto integrador pelos estudantes da{' '}
-            <Text 
-              style={{ fontWeight: 'bold' }} 
+            <Text
+              style={{ fontWeight: 'bold', color: theme.colors.primary, fontSize: fontSize.md }}
               onPress={() => Linking.openURL('https://fatecvotorantim.cps.sp.gov.br/')}
               testID="fatec-link"
             >
               Fatec Votorantim
             </Text>
-            , o EcoSrev nasceu do desejo de criar uma solução tecnológica para os 
+            , o EcoSrev nasceu do desejo de criar uma solução tecnológica para os
             desafios ambientais relacionados ao descarte de eletrônicos.
           </Text>
         </View>
+
+        {/* Footer */}
+        <View style={[styles.footer, { backgroundColor: theme.colors.primary }]}>
+          <Text style={[styles.footerText, { color: theme.colors.text.inverse, fontSize: fontSize.sm }]}>© 2025 EcosRev. Todos os direitos reservados.</Text>
+        </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
   },
   scrollContainer: {
     flexGrow: 1,
     paddingHorizontal: 20,
-    paddingTop: 20, 
+    paddingTop: 20,
     paddingBottom: 40,
   },
   sectionContainer: {
-    backgroundColor: "white",
     borderRadius: 10,
     padding: 15,
     marginBottom: 15,
   },
   sectionTitle: {
-    fontSize: 18,
     fontWeight: "bold",
-    color: "#2ecc71",
     marginBottom: 10,
   },
   sectionText: {
-    color: "#7f8c8d",
     lineHeight: 22,
-  }
+  },
+  footer: {
+    padding: 15,
+    alignItems: "center",
+  },
+  footerText: {
+  },
 });
 
 export default AboutScreen;

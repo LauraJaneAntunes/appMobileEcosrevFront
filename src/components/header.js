@@ -2,6 +2,7 @@
 import React from "react";
 import { StyleSheet, View, StatusBar } from "react-native";
 import { SvgXml } from "react-native-svg";
+import { useTheme } from "../contexts/ThemeContext"
 
 // Código XML do seu SVG
 const logoXml = `
@@ -17,10 +18,23 @@ const logoXml = `
 
 `;
 
-const Header = ({ testID }) => {
+const Header = () => {
+  const theme = useTheme();
+
   return (
-    <View style={styles.header} testID={testID}>
-      <StatusBar backgroundColor="green" barStyle="light-content" />
+    <View
+      style={[
+        styles.header,
+        {
+          backgroundColor: theme.colors.primary,
+          shadowColor: theme.colors.shadow,
+        },
+      ]}
+    >
+      <StatusBar
+        backgroundColor={theme.colors.primary}
+        barStyle={theme.statusBarStyle || "light-content"}
+      />
       
       {/* Logo do Projeto centralizado usando SVG */}
       <SvgXml xml={logoXml} width={400} height={100} />
@@ -33,12 +47,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#4CAF50",
     width: "100%",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowRadius: 6,
+    elevation: 5,
   },
 });
 

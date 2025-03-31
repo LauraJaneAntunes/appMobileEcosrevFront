@@ -1,16 +1,19 @@
 //src\screens\HomeScreen.js
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel from '../components/Carousel';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../contexts/ThemeContext';
+import { useFontSettings } from '../contexts/FontContext';
+
 const { width } = Dimensions.get('window');
 
 export default function HomeScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
+  const { fontSize } = useFontSettings();
   
   const carouselSlides = [
     {
@@ -56,56 +59,60 @@ export default function HomeScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Carousel slides={carouselSlides} />
 
-        {/* Introduction Section */}
+        {/* Introduçao */}
         <View style={[styles.introductionContainer, { backgroundColor: theme.colors.surface }]}>
-          <Text style={styles.sectionTitle}>Bem-vindo ao EcosRev</Text>
-          <Text style={styles.introText}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.primary, fontSize: fontSize.lg }]}>Bem-vindo ao EcosRev</Text>
+          <Text style={[styles.introText, { color: theme.colors.text.primary, fontSize: fontSize.md, fontWeight: 'bold' }]}>
             Uma plataforma inovadora para reciclagem de resíduo eletrônico e troca de pontos por recompensas. Junte-se a
             nós e faça parte da mudança!
           </Text>
 
-          {/* Call to Action Button */}
+          {/* Botão */}
           <TouchableOpacity
             style={[styles.ctaButton, { backgroundColor: theme.colors.primary }]}
             onPress={navigateToLogin}
           >
-            <Text style={[styles.ctaButtonText, { color: theme.colors.text.inverse }]}>Começar Agora</Text>
+            <Text style={[styles.ctaButtonText, { color: theme.colors.text.inverse, fontSize: fontSize.md }]}>Começar Agora</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Services Section */}
+        {/* Serviços */}
         <View style={[styles.servicesContainer, { backgroundColor: theme.colors.background }]}>
-          <Text style={styles.sectionTitle}>O que oferecemos</Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary, fontSize: fontSize.lg }]}>O que oferecemos</Text>
           <View style={styles.servicesGrid}>
             <View style={styles.serviceItem}>
               <MaterialIcons name="recycling" size={60} color={theme.colors.primary} />
-              <Text style={styles.serviceTitle}>Reciclagem de Eletrônicos</Text>
-              <Text style={styles.serviceText}>Recicle seus aparelhos eletrônicos de forma segura e responsável.</Text>
+              <Text style={[styles.serviceTitle, { color: theme.colors.text.primary, fontSize: fontSize.md }]}>
+                Reciclagem de Eletrônicos
+              </Text>
+              <Text style={[styles.serviceText, { color: theme.colors.text.secondary, fontSize: fontSize.sm }]}>
+                Recicle seus aparelhos eletrônicos de forma segura e responsável.
+              </Text>
             </View>
-
-            {/* ... outros itens de serviço ... */}
           </View>
         </View>
 
-        {/* Testimonials Section */}
+        {/* Depoimentos */}
         <View style={[styles.testimonialsContainer, { backgroundColor: theme.colors.surface }]}>
-          <Text style={styles.sectionTitle}>Depoimentos</Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary, fontSize: fontSize.lg }]}>Depoimentos</Text>
           <View style={styles.testimonialsGrid}>
             <View style={[styles.testimonialItem, { backgroundColor: theme.colors.background }]}>
-              <Text style={styles.testimonialText}>
+              <Text style={[styles.testimonialText, { color: theme.colors.text.primary, fontSize: fontSize.md }]}>
                 "O EcosRev facilitou a reciclagem de eletrônicos na minha casa. Além de ajudar o meio ambiente,
                 ainda ganho recompensas!"
               </Text>
-              <Text style={styles.testimonialAuthor}>— Maria Silva</Text>
+              <Text style={[styles.testimonialAuthor, { color: theme.colors.text.secondary, fontSize: fontSize.sm }]}>
+                — Maria Silva
+              </Text>
             </View>
-
-            {/* ... outros depoimentos ... */}
           </View>
         </View>
 
         {/* Footer */}
         <View style={[styles.footer, { backgroundColor: theme.colors.primary }]}>
-          <Text style={[styles.footerText, { color: theme.colors.text.inverse }]}>© 2025 EcosRev. Todos os direitos reservados.</Text>
+          <Text style={[styles.footerText, { color: theme.colors.text.inverse, fontSize: fontSize.sm }]}>
+            © 2025 EcosRev. Todos os direitos reservados.
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -115,22 +122,10 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#fff', // Remova a cor hardcoded
-  },
-  header: {
-    padding: 15,
-    alignItems: 'center',
-    // backgroundColor: '#4CAF50', // Remova a cor hardcoded
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    // color: 'white', // Remova a cor hardcoded
   },
   introductionContainer: {
     padding: 20,
     alignItems: 'center',
-    // backgroundColor: '#f9f9f9', // Remova a cor hardcoded
   },
   ctaButton: {
     paddingVertical: 12,
@@ -138,32 +133,25 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginTop: 20,
     elevation: 3,
-    // backgroundColor: '#4CAF50', // Remova a cor hardcoded
   },
   ctaButtonText: {
-    fontSize: 16,
     fontWeight: 'bold',
-    // color: 'white', // Remova a cor hardcoded
   },
   servicesContainer: {
     padding: 20,
     alignItems: 'center',
-    // backgroundColor: '#e9ecef', // Remova a cor hardcoded
   },
   testimonialsContainer: {
     padding: 20,
     alignItems: 'center',
-    // backgroundColor: '#f9f9f9', // Remova a cor hardcoded
   },
   sectionTitle: {
-    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
   },
   introText: {
     textAlign: 'center',
-    fontSize: 16,
     lineHeight: 24,
   },
   servicesGrid: {
@@ -174,14 +162,12 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   serviceTitle: {
-    fontSize: 18,
     fontWeight: 'bold',
     marginTop: 10,
     marginBottom: 5,
   },
   serviceText: {
     textAlign: 'center',
-    fontSize: 14,
     paddingHorizontal: 10,
   },
   testimonialsGrid: {
@@ -199,25 +185,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 5,
-    // backgroundColor: '#ffffff', // Remova a cor hardcoded
-  },
-  testimonialText: {
-    fontSize: 16,
-    fontStyle: 'italic',
-    marginBottom: 10,
-    lineHeight: 22,
-  },
-  testimonialAuthor: {
-    textAlign: 'right',
-    fontWeight: 'bold',
   },
   footer: {
     padding: 15,
     alignItems: 'center',
-    // backgroundColor: '#4CAF50', // Remova a cor hardcoded
   },
   footerText: {
-    fontSize: 14,
-    // color: 'white', // Remova a cor hardcoded
+    textAlign: 'center',
   },
 });

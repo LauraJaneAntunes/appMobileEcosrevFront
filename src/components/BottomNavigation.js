@@ -3,13 +3,15 @@ import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet, Alert } from "react-native";
 import { House, ArrowRightLeft, History, UserCog, Info } from "lucide-react-native";
 import { CommonActions, useNavigation } from '@react-navigation/native';
-import { useAuth } from '../contexts/AuthContext';
+// import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { useFontSettings } from "../contexts/FontContext";
 
-const BottomNavigation = ({ state, descriptors, navigation }) => {
-  const { isAuthenticated } = useAuth();
+const BottomNavigation = ({ state, navigation }) => {
+  // const { isAuthenticated } = useAuth();
   const theme = useTheme();
   const nav = useNavigation();
+  const { fontSize } = useFontSettings();
 
   const tabs = [
     { name: "HomeTab", icon: House, label: "Início", drawerScreen: "Home" },
@@ -19,47 +21,30 @@ const BottomNavigation = ({ state, descriptors, navigation }) => {
     { name: "PerfilTab", icon: UserCog, label: "Perfil", drawerScreen: "Perfil" },
   ];
 
+  //atualizei para ficar simples
+
   const handleTabPress = (tab) => {
     if (tab.name === "HomeTab") {
-      // A HomeTab sempre pode ser acessada
-      if (navigation.getState().routeNames.includes(tab.name)) {
-        const event = navigation.emit({
-          type: 'tabPress',
-          target: tab.name,
-        });
-        if (!state.index === tabs.findIndex(t => t.name === tab.name) && !event.defaultPrevented) {
-          navigation.navigate(tab.name);
-        }
-      } else {
-        navigation.dispatch(CommonActions.navigate({ name: tab.drawerScreen }));
-      }
+      // A HomeTab sempre recarrega a tela
+      navigation.dispatch(CommonActions.navigate({ name: tab.name }));
     } else {
-      // Para outras abas, verificar a autenticação
-      if (isAuthenticated) {
-        if (navigation.getState().routeNames.includes(tab.name)) {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: tab.name,
-          });
-          if (!state.index === tabs.findIndex(t => t.name === tab.name) && !event.defaultPrevented) {
-            navigation.navigate(tab.name);
-          }
-        } else {
-          navigation.dispatch(CommonActions.navigate({ name: tab.drawerScreen }));
-        }
-      } else {
-        // Se não estiver autenticado, mostrar mensagem e redirecionar para login
-        Alert.alert(
-          'Acesso Restrito',
-          'Você precisa estar logado para acessar esta tela.',
-          [
-            {
-              text: 'Entrar',
-              onPress: () => nav.navigate('Login'),
-            },
-          ]
-        );
-      }
+      navigation.dispatch(CommonActions.navigate({ name: tab.name }));
+
+      // Para outras abas, verificar autenticação
+      // if (isAuthenticated) {
+      //   navigation.dispatch(CommonActions.navigate({ name: tab.name }));
+      // } else {
+      //   Alert.alert(
+      //     "Acesso Restrito",
+      //     "Você precisa estar logado para acessar esta tela.",
+      //     [
+      //       {
+      //         text: "Entrar",
+      //         onPress: () => nav.navigate("Login"),
+      //       },
+      //     ]
+      //   );
+      // }
     }
   };
 
@@ -77,7 +62,7 @@ const BottomNavigation = ({ state, descriptors, navigation }) => {
             <tab.icon size={24} color={isFocused ? theme.colors.primary : theme.colors.text.secondary} />
             <Text style={[
               styles.tabLabel,
-              { color: theme.colors.text.secondary },
+              { fontSize: fontSize.md, color: theme.colors.text.secondary },
               isFocused && { color: theme.colors.primary, fontWeight: 'bold' }
             ]}>
               {tab.label}

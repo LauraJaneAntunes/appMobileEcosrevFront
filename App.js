@@ -1,12 +1,12 @@
 //App.js
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator, DrawerItemList } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
+// import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
 import { ThemeProvider } from "./src/contexts/ThemeContext";
-import { useTheme } from "./src/contexts/ThemeContext";
+import { FontSettingsProvider } from "./src/contexts/FontContext";
 import { View } from "react-native";
 import { House, ArrowRightLeft, History, UserCog, Info, QrCode } from "lucide-react-native";
 
@@ -22,7 +22,7 @@ import RegisterScreen from "./src/screens/RegisterScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import ForgotPasswordScreen from "./src/screens/ForgotPassword";
 import BottomNavigation from "./src/components/BottomNavigation";
-import Header from "./src/components/header";
+import Header from "./src/components/Header";
 import LogoutButton from "./src/components/LogoutButton";
 
 const Drawer = createDrawerNavigator();
@@ -77,23 +77,16 @@ function AppStack() {
   );
 }
 
-function MainApp() {
-  const theme = useTheme();
-  const { isAuthenticated, isLoading } = useAuth();
-
-  return (
-    <NavigationContainer theme={theme}>
-      {isLoading ? <LoadingScreen /> : isAuthenticated ? <AppStack /> : <AuthStack />}
-    </NavigationContainer>
-  );
-}
-
 export default function App() {
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <MainApp />
-      </ThemeProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <FontSettingsProvider>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="App" component={AppStack} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </FontSettingsProvider>
+    </ThemeProvider>
   );
 }

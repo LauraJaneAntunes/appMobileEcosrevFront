@@ -1,6 +1,8 @@
+//src\screens\HistoryScreen.js
 import React from 'react';
-import { View, Text, SectionList, StyleSheet, useColorScheme } from 'react-native';
-import { lightTheme, darkTheme } from '../utils/theme.js';
+import { View, Text, SectionList, StyleSheet } from 'react-native';
+import { useTheme } from '../contexts/ThemeContext';
+import { useFontSettings } from '../contexts/FontContext';
 import { ArrowUp, ArrowDown } from 'lucide-react-native';
 
 const transactions = [
@@ -36,8 +38,8 @@ const groupByMonth = (data) => {
 };
 
 const HistoryScreen = () => {
-  const colorScheme = useColorScheme();
-  const theme = colorScheme === 'dark' ? darkTheme : lightTheme;
+  const theme = useTheme();
+  const { fontSize } = useFontSettings();
   const sections = groupByMonth(transactions);
 
   const renderItem = ({ item }) => {
@@ -53,7 +55,7 @@ const HistoryScreen = () => {
       >
         <View style={styles.transactionHeader}>
           <Text
-            style={[styles.benefitName, { color: theme.colors.textPrimary }]}
+            style={[styles.benefitName, { color: theme.colors.text.primary, fontSize: fontSize.sm }]}
             numberOfLines={1}
             ellipsizeMode="tail"
             testID={`transaction-benefit-${item.id}`}
@@ -62,14 +64,14 @@ const HistoryScreen = () => {
           </Text>
           <View style={styles.pointsContainer}>
             {isNegative ? (
-              <ArrowDown color="red" size={16} />
+              <ArrowDown color={theme.colors.error} size={16} /> // Usando cores do tema
             ) : (
-              <ArrowUp color="green" size={16} />
+              <ArrowUp color={theme.colors.success} size={16} /> // Usando cores do tema
             )}
             <Text
               style={[
                 styles.points,
-                { color: isNegative ? 'red' : 'green' }
+                { color: isNegative ? theme.colors.error : theme.colors.success, fontSize: fontSize.sm }
               ]}
               testID={`transaction-points-${item.id}`}
             >
@@ -79,7 +81,7 @@ const HistoryScreen = () => {
         </View>
         <View style={styles.transactionFooter}>
           <Text
-            style={[styles.date, { color: theme.colors.textSecondary }]}
+            style={[styles.date, { color: theme.colors.text.secondary, fontSize: fontSize.xs }]}
             testID={`transaction-date-${item.id}`}
           >
             {item.date}
@@ -92,13 +94,13 @@ const HistoryScreen = () => {
   const renderSectionHeader = ({ section: { title, total } }) => {
     return (
       <View style={styles.sectionHeaderContainer}>
-        <Text style={[styles.sectionHeader, { color: theme.colors.textPrimary }]}>
+        <Text style={[styles.sectionHeader, { color: theme.colors.text.primary, fontSize: fontSize.md }]}>
           {title}
         </Text>
         <Text
           style={[
             styles.sectionTotal,
-            { color: total < 0 ? '#E2725B' : '#808000' }
+            { color: total < 0 ? theme.colors.error : theme.colors.success, fontSize: fontSize.sm }
           ]}
         >
           Total: {total > 0 ? '+' : ''}{total} pts
@@ -139,11 +141,9 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   sectionHeader: {
-    fontSize: 16,
     fontWeight: 'bold',
   },
   sectionTotal: {
-    fontSize: 14,
     fontWeight: 'bold',
   },
   transactionCard: {
@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   benefitName: {
-    fontSize: 14,
     fontWeight: '500',
     flex: 1,
     marginRight: 8,
@@ -170,7 +169,6 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   points: {
-    fontSize: 14,
     fontWeight: 'bold',
   },
   transactionFooter: {
@@ -179,7 +177,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   date: {
-    fontSize: 12,
   },
 });
 

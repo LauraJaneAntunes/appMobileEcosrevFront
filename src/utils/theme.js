@@ -6,18 +6,20 @@ const lightTheme = {
       primary: '#22C55E',      // Verde principal
       secondary: '#2ecc71',    // Verde secundário
       background: '#f4f4f4',   // Fundo principal (claro)
-      surface: '#DFF0DB',      // Superfície (ex.: cartões ou contêineres)
+      surface: '#fefffa',      // Superfície (ex.: cartões ou contêineres)
       error: '#F44336',        // Mensagens de erro
       text: {
-        primary: '#212121',    // Texto principal
-        secondary: '#757575',  // Texto secundário
-        disabled: '#9E9E9E',   // Texto desabilitado
+        primary: '#505050',    // Texto principal
+        secondary: '#9E9E9E',  // Texto secundário
+        disabled: '#D3D3D3',   // Texto desabilitado
         inverse: '#FFFFFF',    // Texto em fundos escuros
       },
       border: '#E0E0E0',       // Bordas
       success: '#4CAF50',      // Mensagens de sucesso
       warning: '#FFC107',      // Alertas
-      info: '#2196F3',         // Informações
+      info: '#a8c35f',         // Informações
+      shadow: '#000',          // Cor da sombra
+      overlay: 'rgba(0, 0, 0, 0.4)',
     },
     spacing: {
       xs: 4,
@@ -117,7 +119,7 @@ const darkTheme = {
       error: '#CF6679',
       text: {
         primary: '#FFFFFF',
-        secondary: '#B0B0B0',
+        secondary: '#E0E0E0',
         disabled: '#757575',
         inverse: '#000000',
       },
@@ -125,6 +127,7 @@ const darkTheme = {
       success: '#4CAF50',
       warning: '#FFC107',
       info: '#2196F3',
+      shadow: '#fff',
     },
     spacing: {
       xs: 4,

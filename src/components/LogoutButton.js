@@ -1,6 +1,8 @@
+//src\components\LogoutButton.js
 import React from "react";
 import { Text, StyleSheet, TouchableOpacity, Alert, BackHandler } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { useTheme } from "../contexts/ThemeContext"
 
 // Função para confirmar a saída do app
 const handleExit = () => {
@@ -15,10 +17,30 @@ const handleExit = () => {
 };
 
 const LogoutButton = () => {
+  const theme = useTheme();
+  
   return (
-    <TouchableOpacity style={styles.button} onPress={handleExit}>
-      <Icon name="logout" size={24} color="green" style={styles.icon} />
-      <Text style={styles.buttonText}>Sair</Text>
+    <TouchableOpacity
+      style={[
+        styles.button,
+        { backgroundColor: theme.colors.surface },
+      ]}
+      onPress={handleExit}
+    >
+      <Icon
+        name="logout"
+        size={24}
+        color={theme.colors.primary}
+        style={styles.icon}
+      />
+      <Text
+        style={[
+          styles.buttonText,
+          { color: theme.colors.text.primary },
+        ]}
+      >
+        Sair
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -29,13 +51,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     paddingHorizontal: 20,
+    borderRadius: 4,
   },
   icon: {
     marginRight: 12,
   },
   buttonText: {
     fontSize: 16,
-    color: "#555",
     fontWeight: "500",
   },
 });

@@ -1,67 +1,62 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import Svg, { Circle, Text as SvgText } from 'react-native-svg';
-import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
+//src\screens\LoadingScreen.js
+import React, { useEffect } from "react";
+import { View, StyleSheet } from "react-native";
+import Svg, { Circle, Text as SvgText } from "react-native-svg";
+import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from "react-native-reanimated";
+import { useTheme } from "../contexts/ThemeContext";
 
-// Componente para a parte ilustrada do logo que vai girar
+// Componente SVG animado
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 
 export default function LoadingScreen() {
-  // Valor para controlar a rotação
+  // Valor de rotação para animação
   const rotation = useSharedValue(0);
-  
-  // Iniciar a animação ao carregar o componente
-  useEffect(() => {
-    // Certifique-se que a animação começa
-    rotation.value = 0;
-    // Inicia a animação de rotação no sentido horário (para a direita)
-    rotation.value = withRepeat(
-      withTiming(360, { 
-        duration: 3000, 
-        easing: Easing.linear 
-      }),
-      -1, // -1 significa repetir infinitamente
-      false // não reverter a animação (importante para manter girando na mesma direção)
-    );
-    
-    // Para debug - verificar se a animação está funcionando
-    console.log("Animação iniciada");
-  }, []);
-  
-  // Estilo animado para a rotação
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ rotate: `${rotation.value}deg` }],
-    };
-  });
+  const theme = useTheme();
 
-  // Criar arrays de coordenadas para os círculos que formam os dois "C"
+  useEffect(() => {
+    // Inicializa a animação de rotação infinita
+    rotation.value = withRepeat(
+      withTiming(360, {
+        duration: 3000, // Duração de 3 segundos para cada rotação
+        easing: Easing.linear, // Movimento linear
+      }),
+      -1, // Repetir indefinidamente
+      false // Não inverter o sentido de rotação
+    );
+  }, []);
+
+  // Estilo animado para aplicar rotação
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${rotation.value}deg` }],
+  }));
+
+  // Função para criar os pontos de cada "C"
   const createDottedC = (radius, dotSize) => {
     const result = [];
-    const numDots = 11; // Exatamente 11 pontos por C
-    const openingAngle = 1.5; // Ângulo de abertura para ambos os C
-    const startAngle = Math.PI * (1 - openingAngle/2);
-    const endAngle = Math.PI * (1 + openingAngle/2);
-    
+    const numDots = 11; // Número de pontos no C
+    const openingAngle = 1.5; // Ângulo de abertura do C
+    const startAngle = Math.PI * (1 - openingAngle / 2); // Ângulo inicial
+    const endAngle = Math.PI * (1 + openingAngle / 2); // Ângulo final
+
     for (let i = 0; i < numDots; i++) {
       const angle = startAngle + (i / (numDots - 1)) * (endAngle - startAngle);
-      
-      const x = 50 + radius * Math.cos(angle);
-      const y = 50 + radius * Math.sin(angle);
-      
-      result.push({ x, y, r: dotSize });
+      const x = 50 + radius * Math.cos(angle); // Coordenada X
+      const y = 50 + radius * Math.sin(angle); // Coordenada Y
+      result.push({ x, y, r: dotSize }); // Salva posição e tamanho do ponto
     }
-    
+
     return result;
   };
 
-  const outerCDots = createDottedC(35, 3.5); // C externo com raio 35 e pontos tamanho 3.5
-  const innerCDots = createDottedC(25, 2.5); // C interno com raio 25 e pontos menores (2.5)
+  // Configurações fixas dos "C"
+  const outerCDots = createDottedC(35, 3.5); // C externo: raio 35, tamanho dos pontos 3.5
+  const innerCDots = createDottedC(25, 2.5); // C interno: raio 25, tamanho dos pontos 2.5
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      {/* Container principal */}
       <View style={styles.logoContainer}>
-        {/* Parte do SVG animado */}
+        {/* SVG animado */}
         <View style={styles.svgWrapper}>
           <AnimatedSvg
             width={100}
@@ -69,92 +64,77 @@ export default function LoadingScreen() {
             viewBox="0 0 100 100"
             style={[styles.logoSvg, animatedStyle]}
           >
-            {/* Pontos formando o C externo */}
+            {/* Círculos externos do C maior */}
             {outerCDots.map((dot, index) => (
               <Circle
                 key={`outer-${index}`}
                 cx={dot.x}
                 cy={dot.y}
                 r={dot.r}
-                fill="#a3e619"
+                fill="#a3e619" // Cor fixa para o C maior (externo)
               />
             ))}
-            
-            {/* Pontos formando o C interno */}
+            {/* Círculos internos do C menor */}
             {innerCDots.map((dot, index) => (
               <Circle
                 key={`inner-${index}`}
                 cx={dot.x}
                 cy={dot.y}
                 r={dot.r}
-                fill="#a8c35f"
+                fill="#a8c35f" // Cor fixa para o C menor (interno)
               />
             ))}
           </AnimatedSvg>
 
-          {/* E estático sobreposto */}
-          <Svg 
-            width={100} 
-            height={100} 
-            viewBox="0 0 100 100" 
-            style={styles.staticE}
-          >
+          {/* "E" estático no centro */}
+          <Svg width={100} height={100} viewBox="0 0 100 100" style={styles.staticE}>
             <SvgText
-              x="50" // Centralizar o E eixo x
-              y="60" // Centralizar o E eixo y
+              x="50" // Centraliza horizontalmente
+              y="60" // Centraliza verticalmente
               textAnchor="middle"
               fontSize="25"
               fontWeight="bold"
-              fill="#525050"
+              fill={theme.colors.text.primary} // Cor muda de acordo com o tema
             >
               E
             </SvgText>
           </Svg>
         </View>
-        
-        {/* Parte textual estática */}
-        {/* <View style={styles.textContainer}>
-          <Text style={styles.logoText}>EcosRev</Text>
-        </View> */}
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  // Estilo principal do container
   container: {
     flex: 1,
-    backgroundColor: '#fafafa',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
+  // Estilo do logo e alinhamento
   logoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
+  // Wrapper para o SVG
   svgWrapper: {
-    position: 'relative',
+    position: "relative",
     width: 100,
     height: 100,
   },
+  // Estilo do SVG animado
   logoSvg: {
-    position: 'absolute',
+    position: "absolute",
     width: 100,
     height: 100,
   },
+  // Estilo do "E" estático
   staticE: {
-    position: 'absolute',
+    position: "absolute",
     width: 100,
     height: 100,
     top: 0,
     left: 0,
-  },
-  textContainer: {
-    marginLeft: 10,
-  },
-  logoText: {
-    color: '#514F50',
-    fontSize: 24,
-    fontWeight: 'bold',
   },
 });

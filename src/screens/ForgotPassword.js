@@ -1,74 +1,65 @@
+//src\screens\ForgotPassword.js
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { TextInput } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { useState } from 'react';
+import { useTheme } from '../contexts/ThemeContext';
+import { useFontSettings } from '../contexts/FontContext';
+import { forgotPasswordSchema } from '../utils/validationSchemas';
+import AuthForm from '../components/AuthForm';
 
-const ForgotPasswordSchema = Yup.object().shape({
-  email: Yup.string()
-    .email('Email inválido')
-    .required('Email é obrigatório'),
-});
-
-export default function ForgotPassword() {
+export default function ForgotPasswordScreen() {
   const navigation = useNavigation();
   const [feedback, setFeedback] = useState(null);
+  const theme = useTheme();
+  const { fontSize } = useFontSettings();
 
   const handleResetPassword = (values) => {
-    // Simulação de chamada à API - IMPLEMENTAR LÓGICA DE BACKEND
-    setTimeout(() => {
-      console.log('Solicitação de recuperação de senha enviada para:', values.email);
-      setFeedback({
-        type: 'success',
-        message: 'Uma senha temporária foi enviada para seu email.',
-      });
-    }, 1500);
+    // IMPLEMENTAR LÓGICA DE BACKEND
+    console.log('Solicitação de recuperação de senha enviada para:', values.email);
+    setFeedback({
+      type: 'success',
+      message: 'Uma senha temporária foi enviada para seu email.',
+    });
   };
 
+  const forgotPasswordFields = [
+    { name: 'email', label: 'Email' },
+  ];
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Recuperar Senha</Text>
-      
-      <Formik
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <Text style={[styles.title, { color: theme.colors.primary, fontSize: fontSize.xl }]}>Recuperar Senha</Text>
+
+      <AuthForm
         initialValues={{ email: '' }}
-        validationSchema={ForgotPasswordSchema}
+        validationSchema={forgotPasswordSchema}
         onSubmit={handleResetPassword}
+        fields={forgotPasswordFields}
+        isPasswordVisible={false}
+        togglePasswordVisibility={() => {}}
+        errorMessages={feedback && feedback.type === 'error' ? { email: feedback.message } : null}
       >
-        {({ handleChange, handleSubmit, values, errors, touched }) => (
-          <View style={styles.form}>
-            <TextInput
-              label="Email"
-              value={values.email}
-              onChangeText={handleChange('email')}
-              style={styles.input}
-              mode="outlined"
-              activeOutlineColor="#4CAF50"
-              error={touched.email && errors.email}
-            />
-            {touched.email && errors.email && (
-              <Text style={styles.errorText}>{errors.email}</Text>
-            )}
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: theme.colors.primary }]}
+          onPress={() => {}}
+        >
+          <Text style={[styles.buttonText, { color: theme.colors.text.inverse, fontSize: fontSize.md }]}>
+            Enviar
+          </Text>
+        </TouchableOpacity>
+      </AuthForm>
 
-            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Enviar</Text>
-            </TouchableOpacity>
+      {feedback && feedback.type === 'success' && (
+        <Text style={[styles.feedbackText, { color: theme.colors.success, fontSize: fontSize.sm }]}>
+          {feedback.message}
+        </Text>
+      )}
 
-            {feedback && (
-              <Text style={[
-                styles.feedbackText,
-                { color: feedback.type === 'success' ? '#4CAF50' : 'red' },
-              ]}>
-                {feedback.message}
-              </Text>
-            )}
-
-            <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.link}>
-              <Text style={styles.linkText}>Voltar para o login</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </Formik>
+      <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.link}>
+        <Text style={[styles.linkText, { color: theme.colors.primary, fontSize: fontSize.sm }]}>
+          Voltar para o login
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -77,51 +68,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: 'white',
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 32,
     fontWeight: 'bold',
-    color: '#22C55E',
-    marginTop: 60,
-    marginBottom: 40,
+    marginBottom: 30,
     textAlign: 'center',
   },
-  form: {
-    width: '100%',
-  },
-  input: {
-    marginBottom: 8,
-    backgroundColor: 'white',
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 12,
-    marginBottom: 16,
-  },
   button: {
-    backgroundColor: '#22C55E',
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: 20,
   },
   buttonText: {
-    color: 'white',
-    fontSize: 16,
     fontWeight: 'bold',
   },
   link: {
-    marginTop: 16,
+    marginTop: 20,
     alignItems: 'center',
   },
-  linkText: {
-    color: '#22C55E',
-    fontSize: 14,
-  },
+  linkText: {},
   feedbackText: {
     textAlign: 'center',
     marginTop: 16,
-    fontSize: 14,
   },
 });
