@@ -1,12 +1,8 @@
-//App.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator, DrawerItemList } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-// import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
-import { ThemeProvider } from "./src/contexts/ThemeContext";
-import { FontSettingsProvider } from "./src/contexts/FontContext";
 import { View } from "react-native";
 import { House, ArrowRightLeft, History, UserCog, Info, QrCode } from "lucide-react-native";
 
@@ -21,8 +17,8 @@ import QRCodeScannerScreen from "./src/screens/QRCodeScannerScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import ForgotPasswordScreen from "./src/screens/ForgotPassword";
-import BottomNavigation from "./src/components/BottomNavigation";
-import Header from "./src/components/Header";
+import BottomNavigation from "./src/components/bottom-navigation";
+import Header from "./src/components/header";
 import LogoutButton from "./src/components/LogoutButton";
 
 const Drawer = createDrawerNavigator();
@@ -78,15 +74,18 @@ function AppStack() {
 }
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(true); // Simula autenticação - IMPLEMENTAR LÓGICA DE BACKEND
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
   return (
-    <ThemeProvider>
-      <FontSettingsProvider>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="App" component={AppStack} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </FontSettingsProvider>
-    </ThemeProvider>
+    <NavigationContainer>
+      {isLoading ? <LoadingScreen /> : isAuthenticated ? <AppStack /> : <AuthStack />}
+    </NavigationContainer>
   );
 }
