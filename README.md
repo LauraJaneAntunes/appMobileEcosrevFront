@@ -1,4 +1,144 @@
-# 📦 Dependências
+# 🌱 Ecosrev
+
+Bem-vindo ao **Ecosrev**!
+
+Este projeto inovador busca revolucionar o descarte de eletrônicos, transformando-o em uma prática sustentável e recompensadora para a sociedade. ♻️
+
+Originalmente iniciado como uma aplicação web em semestres anteriores, o projeto ganhou força e amadureceu ao longo do curso de  **Desenvolvimento de Software Multiplataforma** , na Fatec de Votorantim. Agora, nesta nova etapa, o foco está na construção de uma solução mobile avançada, alinhada às demandas do 5º semestre, integrando o aprendizado das disciplinas de  **Desenvolvimento Mobile 2** ,  **Laboratório de Desenvolvimento Mobile** , **Computação em Nuvem (AWS)** e  **Aprendizagem de Máquina** .
+
+Combinando inovação tecnológica e responsabilidade ambiental, o projeto tem como objetivo proporcionar uma experiência prática, envolvente e eficiente, que beneficia tanto o meio ambiente quanto os usuários. 🌱✨
+
+---
+
+## 📱 Sobre o Projeto
+
+O **Ecosrev** conecta cidadãos conscientes a empresas especializadas em reciclagem, tornando o descarte responsável mais acessível e vantajoso.
+
+💚 **Contribua para um futuro mais sustentável enquanto ganha benefícios exclusivos a cada interação.**
+
+---
+
+## 🔗 Acesse Nosso SIte
+
+Quer saber mais? Acesse nossa página oficial:
+
+👉 [ecos-rev-pi.vercel.app](https://ecos-rev-pi.vercel.app/)
+
+Ou nossa página sobre este projeto mobile:
+
+👉 [ecos-rev-mobile.netlify.app](https://lpappmobileecosrev.netlify.app/)
+
+🌟 **Junte-se a nós na missão de transformar o descarte eletrônico e fazer a diferença no planeta!**
+
+---
+
+## 📥 Em breve nas principais lojas de aplicativo
+
+Fique de olho! O Ecosrev estará disponível para download em breve.
+
+---
+
+## 🧑‍💻 Desenvolvedores
+
+Este projeto esta sendo desenvolvido por uma equipe de estudantes do curso de Desenvolvimento de Software Multiplataforma. Abaixo estão os nomes dos colaboradores:
+
+| Nome                          | GitHub                                               |
+| ----------------------------- | ---------------------------------------------------- |
+| *Gabriel Yamaoka Bernardes* | [YamaokaK](https://github.com/YamaokaK)                 |
+| *João Lucas Melo*          | [JoaoLucasMdO](https://github.com/JoaoLucasMdO)         |
+| *Laura Jane Antunes*        | [LauraJaneAntunes](https://github.com/LauraJaneAntunes) |
+| *Mariana Hirata*            | [marianakakimoto](https://github.com/marianakakimoto)   |
+| *Mateus Ferreira*           | [AEntropia](https://github.com/AEntropia)               |
+
+---
+
+
+
+## 🚀 Como Rodar o Projeto
+
+Siga os passos abaixo para configurar e executar o projeto no ambiente local:
+
+### 📋 Pré-requisitos
+
+Certifique-se de ter os seguintes softwares instalados no seu sistema:
+
+* **Node.js** (versão 16 ou superior)
+* **npm** ou **yarn** (gerenciador de pacotes)
+* **Expo CLI** (para gerenciar e executar o projeto)
+
+### 📥 Instalação
+
+1. **Clone este repositório** :
+   bash
+
+```
+git clonehttps://github.com/LauraJaneAntunes/appMobileEcosrevFront.git
+```
+
+1. **Acesse o diretório do projeto** :
+   bash
+
+```
+cd appMobileEcosrevFront
+```
+
+1. **Instale as dependências** :
+   Utilize npm ou yarn:
+   bash
+
+```
+   npm install
+```
+
+   Ou:
+   bash
+
+```
+   yarn install
+```
+
+### ▶️ Executando o Projeto
+
+1. **Inicie o servidor de desenvolvimento** :
+   bash
+
+```
+   npm start
+```
+
+   Ou:
+   bash
+
+```
+   yarn start
+```
+
+1. **Escolha a plataforma para rodar o aplicativo** :
+
+* Para Android:
+  bash
+
+  ```
+  expo start --android
+  ```
+* Para iOS:
+  bash
+
+  ```
+  expo start --ios
+  ```
+* Para Web:
+  bash
+
+  ```
+  expo start --web
+  ```
+
+1. Abra o aplicativo Expo Go no seu dispositivo (disponível para Android ou iOS), escaneie o QR Code gerado pelo terminal e aproveite!
+
+---
+
+## 📦 Dependências
 
 Este projeto utiliza diversas dependências para garantir funcionalidades robustas e uma experiência fluida. Abaixo estão as principais categorias e seus respectivos pacotes:
 
@@ -64,7 +204,7 @@ Para facilitar o processo de desenvolvimento:
 
 * `@babel/core`: Transpila o código JavaScript para garantir compatibilidade.
 
-
+---
 
 ## 📂 Estrutura do Projeto
 
@@ -77,65 +217,37 @@ APPMOBILECOSREVFRONT
 ├── src
 │   ├── components
 │   │   ├── Animation.js
-
 │   │   ├── AuthForm.js
-
 │   │   ├── BottomNavigation.js
-
 │   │   ├── Carousel.js
-
 │   │   ├── Header.js
-
 │   │   ├── LogoutButton.js
-
 │   ├── contexts
 │   │   ├── AuthContext.js
-
 │   │   ├── FontContext.js
-
 │   │   ├── ThemeContext.js
-
 │   ├── screens
 │   │   ├── AboutScreen.js
-
 │   │   ├── BenefitsScreen.js
-
 │   │   ├── ConfigScreen.js
-
 │   │   ├── ForgotPassword.js
-
 │   │   ├── HistoryScreen.js
-
 │   │   ├── HomeScreen.js
-
 │   │   ├── LoadingScreen.js
-
 │   │   ├── LoginScreen.js
-
 │   │   ├── ProfileScreen.js
-
 │   │   ├── QRCodeScannerScreen.js
-
 │   │   ├── RegisterScreen.js
-
 │   ├── utils
 │   │   ├── theme.js
-
 │   │   ├── validationSchemas.js
-
 ├── .gitignore
 ├── App.js
-
 ├── app.json
-
 ├── babelconfig.js
-
 ├── index.js
-
 ├── package-lock.json
-
 ├── package.json
-
 ├── README.md
 
 ### 📋 Descrição Geral:
@@ -156,5 +268,3 @@ APPMOBILECOSREVFRONT
   - `README.md`: Este arquivo explicativo do projeto.
 
 ---
-
-Você pode incluir isso no seu README para documentar a estrutura do projeto de forma clara e organizada. Se precisar de mais ajustes ou melhorias, é só avisar! 🚀😊
