@@ -1,7 +1,7 @@
 //src\components\LogoutButton.js
 import React from "react";
 import { Text, StyleSheet, TouchableOpacity, Alert, BackHandler } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { LogOut } from "lucide-react-native";
 import { useTheme } from "../contexts/ThemeContext"
 
 // Função para confirmar a saída do app
@@ -18,7 +18,7 @@ const handleExit = () => {
 
 const LogoutButton = () => {
   const theme = useTheme();
-  
+
   return (
     <TouchableOpacity
       style={[
@@ -27,8 +27,7 @@ const LogoutButton = () => {
       ]}
       onPress={handleExit}
     >
-      <Icon
-        name="logout"
+      <LogOut
         size={24}
         color={theme.colors.primary}
         style={styles.icon}

@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel from '../components/Carousel';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Recycle } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../contexts/ThemeContext';
 import { useFontSettings } from '../contexts/FontContext';
@@ -14,7 +14,7 @@ export default function HomeScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
   const { fontSize } = useFontSettings();
-  
+
   const carouselSlides = [
     {
       imageSrc: require('../../assets/imagem1.jpg'),
@@ -81,7 +81,7 @@ export default function HomeScreen() {
           <Text style={[styles.sectionTitle, { color: theme.colors.text.primary, fontSize: fontSize.lg }]}>O que oferecemos</Text>
           <View style={styles.servicesGrid}>
             <View style={styles.serviceItem}>
-              <MaterialIcons name="recycling" size={60} color={theme.colors.primary} />
+              <Recycle size={60} color={theme.colors.primary} /> {/* Use o ícone Recycle do lucide-react-native */}
               <Text style={[styles.serviceTitle, { color: theme.colors.text.primary, fontSize: fontSize.md }]}>
                 Reciclagem de Eletrônicos
               </Text>
