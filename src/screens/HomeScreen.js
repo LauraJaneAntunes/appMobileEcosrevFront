@@ -108,12 +108,6 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Footer */}
-        <View style={[styles.footer, { backgroundColor: theme.colors.primary }]}>
-          <Text style={[styles.footerText, { color: theme.colors.text.inverse, fontSize: fontSize.sm }]}>
-            © 2025 EcosRev. Todos os direitos reservados.
-          </Text>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
