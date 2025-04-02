@@ -1,8 +1,11 @@
 // Header.js
 import React from "react";
-import { StyleSheet, View, StatusBar } from "react-native";
+import { StyleSheet, View, StatusBar, Dimensions, Platform } from "react-native";
 import { SvgXml } from "react-native-svg";
-import { useTheme } from "../contexts/ThemeContext"
+import { useTheme } from "../contexts/ThemeContext";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { BlurView } from "@react-native-community/blur";
+import Animated, { useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, interpolate, Extrapolation } from "react-native-reanimated";
 
 // Código XML do seu SVG
 const logoXml = `
@@ -18,27 +21,95 @@ const logoXml = `
 
 `;
 
-const Header = () => {
+const { width } = Dimensions.get("window");
+const HEADER_MAX_HEIGHT = 120;
+const HEADER_MIN_HEIGHT = 70;
+const LOGO_MAX_WIDTH = 400;
+const LOGO_MIN_WIDTH = 300;
+
+const Header = ({ scrollY = useSharedValue(0) }) => {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
+  
+  // Estilo animado para o header
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    const height = interpolate(
+      scrollY.value,
+      [0, 100],
+      [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+      Extrapolation.CLAMP
+    );
+    
+    const opacity = interpolate(
+      scrollY.value,
+      [0, 100],
+      [1, 0.9],
+      Extrapolation.CLAMP
+    );
+    
+    return {
+      height,
+      opacity,
+    };
+  });
+  
+  // Estilo animado para o logo
+  const logoAnimatedStyle = useAnimatedStyle(() => {
+    const width = interpolate(
+      scrollY.value,
+      [0, 100],
+      [LOGO_MAX_WIDTH, LOGO_MIN_WIDTH],
+      Extrapolation.CLAMP
+    );
+    
+    return {
+      width,
+      height: width / 4, // Mantém proporção do logo
+    };
+  });
+
+  // Determina se deve usar o blur effect baseado na plataforma
+  const shouldUseBlur = Platform.OS === 'ios';
 
   return (
-    <View
+    <Animated.View
       style={[
         styles.header,
+        headerAnimatedStyle,
         {
-          backgroundColor: theme.colors.primary,
-          shadowColor: theme.colors.shadow,
+          paddingTop: insets.top,
+          backgroundColor: shouldUseBlur ? 'transparent' : theme.colors.primary,
         },
       ]}
     >
       <StatusBar
-        backgroundColor={theme.colors.primary}
+        translucent
+        backgroundColor="transparent"
         barStyle={theme.statusBarStyle || "light-content"}
       />
       
-      {/* Logo do Projeto centralizado usando SVG */}
-      <SvgXml xml={logoXml} width={400} height={100} />
-    </View>
+      {shouldUseBlur && (
+        <BlurView
+          style={StyleSheet.absoluteFillObject}
+          blurType={theme.dark ? "dark" : "light"}
+          blurAmount={10}
+        />
+      )}
+      
+      {/* Gradient overlay (opcional) */}
+      <View style={[
+        StyleSheet.absoluteFillObject, 
+        { 
+          backgroundColor: theme.colors.primary,
+          opacity: 0.7,
+        }
+      ]} />
+      
+      {/* Logo do Projeto com animação de tamanho */}
+      <Animated.View style={logoAnimatedStyle}>
+        <SvgXml xml={logoXml} width="100%" height="100%" />
+      </Animated.View>
+    </Animated.View>
   );
 };
 
@@ -48,10 +119,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.25,
-    shadowRadius: 6,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 8,
+    zIndex: 100,
   },
 });
 
