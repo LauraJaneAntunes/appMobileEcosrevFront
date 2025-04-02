@@ -12,7 +12,7 @@ const defaultFontSizes = {
 };
 
 export const FontSettingsProvider = ({ children }) => {
-  const [fontSizePreference, setFontSizePreference] = useState('medium');
+  const [fontPreference, setFontPreference] = useState('medium');
   const [fontSize, setFontSize] = useState(defaultFontSizes.medium);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export const FontSettingsProvider = ({ children }) => {
       try {
         const savedSize = await AsyncStorage.getItem(FONT_SIZE_KEY);
         if (savedSize) {
-          setFontSizePreference(savedSize);
+          setFontPreference(savedSize);
           setFontSize(defaultFontSizes[savedSize] || defaultFontSizes.medium);
         }
       } catch (error) {
@@ -32,7 +32,17 @@ export const FontSettingsProvider = ({ children }) => {
   }, []);
 
   const updateFontSize = async (newSize) => {
-    setFontSizePreference(newSize);
+    setFontPreference(newSize);
+    setFontSize(defaultFontSizes[newSize] || defaultFontSizes.medium);
+    try {
+      await AsyncStorage.setItem(FONT_SIZE_KEY, newSize);
+    } catch (error) {
+      console.log('Erro ao salvar a preferência de tamanho da fonte:', error);
+    }
+  };
+
+  const updateFontPreference = async (newSize) => {
+    setFontPreference(newSize);
     setFontSize(defaultFontSizes[newSize] || defaultFontSizes.medium);
     try {
       await AsyncStorage.setItem(FONT_SIZE_KEY, newSize);
@@ -42,7 +52,7 @@ export const FontSettingsProvider = ({ children }) => {
   };
 
   return (
-    <FontContext.Provider value={{ fontSize, updateFontSize }}>
+    <FontContext.Provider value={{ fontSize, updateFontSize, fontPreference, updateFontPreference }}>
       {children}
     </FontContext.Provider>
   );

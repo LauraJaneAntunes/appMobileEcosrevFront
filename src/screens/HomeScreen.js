@@ -19,37 +19,37 @@ export default function HomeScreen() {
     {
       imageSrc: require('../../assets/imagem1.jpg'),
       altText: "Imagem 1",
-      caption: "Descubra como reciclar eletrônicos de forma sustentável!",
+      // caption: "Descubra como reciclar eletrônicos de forma sustentável!",
     },
     {
       imageSrc: require('../../assets/backgroundImg.jpeg'),
       altText: "Imagem 2",
-      caption: "Transforme resíduos em pontos e conquiste prêmios!",
+      // caption: "Transforme resíduos em pontos e conquiste prêmios!",
     },
     {
       imageSrc: require('../../assets/macawImg.jpeg'),
       altText: "Imagem 3",
-      caption: "Junte-se à mudança por um planeta mais limpo.",
+      // caption: "Junte-se à mudança por um planeta mais limpo.",
     },
     {
       imageSrc: require('../../assets/toucanImg.jpeg'),
       altText: "Imagem 4",
-      caption: "Converta resíduos em oportunidades e ajude a preservar o meio ambiente.",
+      // caption: "Converta resíduos em oportunidades e ajude a preservar o meio ambiente.",
     },
     {
       imageSrc: require('../../assets/beeImg.jpeg'),
       altText: "Imagem 5",
-      caption: "Dê o primeiro passo para um futuro mais sustentável com a reciclagem responsável.",
+      // caption: "Dê o primeiro passo para um futuro mais sustentável com a reciclagem responsável.",
     },
     {
       imageSrc: require('../../assets/imagem3.jpg'),
       altText: "Imagem 6",
-      caption: "Recicle hoje para transformar o amanhã em um lugar melhor para todos.",
+      // caption: "Recicle hoje para transformar o amanhã em um lugar melhor para todos.",
     },
   ];
 
   const navigateToLogin = () => {
-    navigation.navigate('LoginScreen');
+    navigation.navigate('Login');
   };
 
   return (

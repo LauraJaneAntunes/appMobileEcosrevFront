@@ -19,7 +19,7 @@ const lightTheme = {
       warning: '#FFC107',      // Alertas
       info: '#a8c35f',         // Informações
       shadow: '#000',          // Cor da sombra
-      overlay: 'rgba(0, 0, 0, 0.4)',
+      overlay: 'rgba(255, 255, 255, 0.4)',
     },
     spacing: {
       xs: 4,

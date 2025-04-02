@@ -1,57 +1,38 @@
-//src\components\BottomNavigation.js
 import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet, Alert } from "react-native";
-import { House, ArrowRightLeft, History, UserCog, Info } from "lucide-react-native";
+import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { House, ArrowRightLeft, History, UserCog, Menu } from "lucide-react-native";
 import { CommonActions, useNavigation } from '@react-navigation/native';
-// import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useFontSettings } from "../contexts/FontContext";
 
 const BottomNavigation = ({ state, navigation }) => {
-  // const { isAuthenticated } = useAuth();
   const theme = useTheme();
-  const nav = useNavigation();
   const { fontSize } = useFontSettings();
 
+  const openDrawer = () => {
+    navigation.openDrawer();
+  };
+
   const tabs = [
-    { name: "HomeTab", icon: House, label: "Início", drawerScreen: "Home" },
-    { name: "BeneficiosTab", icon: ArrowRightLeft, label: "Troca", drawerScreen: "Troca" },
-    { name: "HistoricoTab", icon: History, label: "Histórico", drawerScreen: "Historico" },
-    { name: "SobreTab", icon: Info, label: "Sobre", drawerScreen: "Sobre" },
-    { name: "PerfilTab", icon: UserCog, label: "Perfil", drawerScreen: "Perfil" },
+    { name: "HomeTab", icon: House, label: "Início" },
+    { name: "BeneficiosTab", icon: ArrowRightLeft, label: "Troca" },
+    { name: "HistoricoTab", icon: History, label: "Histórico" },
+    { name: "PerfilTab", icon: UserCog, label: "Perfil" },
+    { name: "MenuTab", icon: Menu, label: "Menu", isDrawer: true },
   ];
 
-  //atualizei para ficar simples
-
   const handleTabPress = (tab) => {
-    if (tab.name === "HomeTab") {
-      // A HomeTab sempre recarrega a tela
-      navigation.dispatch(CommonActions.navigate({ name: tab.name }));
+    if (tab.isDrawer) {
+      openDrawer();
     } else {
       navigation.dispatch(CommonActions.navigate({ name: tab.name }));
-
-      // Para outras abas, verificar autenticação
-      // if (isAuthenticated) {
-      //   navigation.dispatch(CommonActions.navigate({ name: tab.name }));
-      // } else {
-      //   Alert.alert(
-      //     "Acesso Restrito",
-      //     "Você precisa estar logado para acessar esta tela.",
-      //     [
-      //       {
-      //         text: "Entrar",
-      //         onPress: () => nav.navigate("Login"),
-      //       },
-      //     ]
-      //   );
-      // }
     }
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}>
-      {tabs.map((tab, index) => {
-        const isFocused = state.index === index;
+    <View style={[styles.container, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}> 
+      {tabs.map((tab) => {
+        const isFocused = state.routes[state.index]?.name === tab.name;
 
         return (
           <TouchableOpacity

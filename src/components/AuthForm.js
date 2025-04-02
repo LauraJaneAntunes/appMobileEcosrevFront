@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import { Eye, EyeOff } from 'lucide-react-native';
 import { useTheme } from '../contexts/ThemeContext';
 
-const AuthForm = ({ initialValues, validationSchema, onSubmit, fields, isPasswordVisible, togglePasswordVisibility, errorMessages }) => {
+const AuthForm = ({ initialValues, validationSchema, onSubmit, fields, isPasswordVisible, togglePasswordVisibility, errorMessages, children }) => {
   const theme = useTheme();
 
   return (
@@ -53,7 +53,7 @@ const AuthForm = ({ initialValues, validationSchema, onSubmit, fields, isPasswor
               )}
             </View>
           ))}
-          {React.Children.map(props.children, (child) =>
+          {React.Children.map(children, (child) =>
             React.cloneElement(child, { handleSubmit })
           )}
         </View>

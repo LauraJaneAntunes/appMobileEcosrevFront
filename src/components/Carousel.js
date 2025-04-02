@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Image, Text, StyleSheet, Dimensions, FlatList, Animated } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, FlatList, Animated } from 'react-native';
 import { useTheme } from "../contexts/ThemeContext";
-import { useFontSettings } from "../contexts/FontContext";
 
 const { width } = Dimensions.get('window');
 
@@ -11,7 +10,6 @@ const Carousel = ({ slides }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const theme = useTheme();
-  const { fontSize } = useFontSettings();
 
   // Auto scroll
   useEffect(() => {
@@ -40,21 +38,6 @@ const Carousel = ({ slides }) => {
           style={styles.image}
           resizeMode="cover"
         />
-        <View
-          style={[
-            styles.captionContainer,
-            { backgroundColor: theme.colors.overlay },
-          ]}
-        >
-          <Text
-            style={[
-              styles.caption,
-              { fontSize: fontSize.md, color: theme.colors.text.secondary, fontWeight: 'bold' },
-            ]}
-          >
-            {item.caption}
-          </Text>
-        </View>
       </View>
     );
   };
@@ -101,15 +84,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-  },
-  captionContainer: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    padding: 15,
-  },
-  caption: {
-    textAlign: 'center',
   },
 });
 
