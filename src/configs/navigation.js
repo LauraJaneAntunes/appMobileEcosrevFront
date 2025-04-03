@@ -1,6 +1,6 @@
 //src\configs\navigation.js
 import React from "react";
-import { SafeAreaView, View } from "react-native";
+import { SafeAreaView, View, StyleSheet } from "react-native";
 import { createDrawerNavigator, DrawerItemList } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -39,7 +39,7 @@ export function TabScreens() {
   );
 }
 
-// Stack de autenticação
+// Stack de autenticação  - Drawer
 export function AuthStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -59,8 +59,9 @@ export function AppStack() {
     <Drawer.Navigator
       drawerContent={(props) => (
         <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}> 
-          <DrawerItemList {...props} />
-          <LogoutButton />
+          <View style={styles.spacer} />
+            <DrawerItemList {...props} />
+            <LogoutButton />
         </SafeAreaView>
       )}
       screenOptions={{
@@ -69,7 +70,7 @@ export function AppStack() {
           color: theme.colors.text.primary,
           fontFamily: fontFamily,
         },
-        drawerActiveTintColor: theme.colors.primary,
+        drawerActiveBackgroundColor: 'transparent',
       }}
       initialRouteName="Home"
     >
@@ -141,4 +142,12 @@ export function AppStack() {
       />
     </Drawer.Navigator>
   );
+  
 }
+
+const styles = StyleSheet.create({
+  spacer: {
+    height: 40,
+    backgroundColor: 'transparent',
+  },
+});

@@ -21,7 +21,7 @@ const Header = () => {
     >
       <StatusBar
         translucent
-        backgroundColor="transparent"
+        backgroundColor={theme.colors.statusbar}
         barStyle={theme.statusBarStyle || "light-content"}
       />
 

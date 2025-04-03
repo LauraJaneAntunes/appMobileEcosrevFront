@@ -7,7 +7,8 @@ const lightTheme = {
       secondary: '#2ecc71',    // Verde secundário
       background: '#f4f4f4',   // Fundo principal (claro)
       surface: '#fefffa',      // Superfície (ex.: cartões ou contêineres)
-      error: '#F44336',        // Mensagens de erro
+      error: '#CF6679',        // Mensagens de erro
+      statusbar:'#333333',
       text: {
         primary: '#505050',    // Texto principal
         secondary: '#9E9E9E',  // Texto secundário
@@ -116,11 +117,12 @@ const darkTheme = {
       secondary: '#2ecc71',   
       background: '#121212',
       surface: '#1E1E1E',
-      error: '#CF6679',
+      error: '#F44336',
+      statusbar:'#333333',
       text: {
         primary: '#FFFFFF',
         secondary: '#E0E0E0',
-        disabled: '#757575',
+        disabled: '#D3D3D3',
         inverse: '#000000',
       },
       border: '#333333',

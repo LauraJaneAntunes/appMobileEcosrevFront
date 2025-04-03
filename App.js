@@ -1,7 +1,6 @@
 //App.js
 import { useFonts, Poppins_400Regular } from '@expo-google-fonts/poppins';
 import React, { useState, useEffect } from "react";
-import { StatusBar } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { ThemeProvider } from "./src/contexts/ThemeContext";
 import { FontSettingsProvider } from "./src/contexts/FontContext";
