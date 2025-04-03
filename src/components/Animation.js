@@ -47,7 +47,7 @@ const Animation = () => {
 
   return (
     <Animated.View style={animatedStyle}>
-      <Svg width={100} height={100} viewBox="0 0 100 100">
+      <Svg width={100} height={80} viewBox="0 0 100 100">
         {/* Círculos externos do C maior */}
         {outerCDots.map((dot, index) => (
           <Circle key={`outer-${index}`} cx={dot.x} cy={dot.y} r={dot.r} fill="#a3e619" /> // Cor fixa para o C maior (externo)

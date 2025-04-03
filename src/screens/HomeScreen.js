@@ -1,6 +1,6 @@
 //src\screens\HomeScreen.js
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel from '../components/Carousel';
 import { Recycle } from 'lucide-react-native';
@@ -54,7 +54,6 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <StatusBar backgroundColor={theme.colors.primary} barStyle="light-content" />
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <Carousel slides={carouselSlides} />

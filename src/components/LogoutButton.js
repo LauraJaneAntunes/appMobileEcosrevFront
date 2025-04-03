@@ -8,7 +8,6 @@ import CustomAlert from "./CustomAlert";
 import { BackHandler } from "react-native";
 
 const LogoutButton = () => {
-
   const theme = useTheme();
   const { fontSize, fontFamily } = useFontSettings();
   const [alertVisible, setAlertVisible] = useState(false);
@@ -27,14 +26,11 @@ const LogoutButton = () => {
       <TouchableOpacity
         style={[
           styles.button,
-          {
-            backgroundColor: theme.colors.surface,
-          },
         ]}
         onPress={handleExit}
       >
         <LogOut
-          size={20}
+          size={fontSize.md}
           color={theme.colors.primary}
           style={styles.icon}
         />
@@ -43,6 +39,7 @@ const LogoutButton = () => {
             styles.buttonText,
             {
               color: theme.colors.text.primary,
+              fontSize: fontSize.md,
               fontFamily,
             },
           ]}
@@ -68,10 +65,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: 4,
+    marginBottom: 0,
   },
   icon: {
     marginRight: 12,
+  },
+  buttonText: {
+    fontSize: 16,
   },
 });
 

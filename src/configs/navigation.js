@@ -1,6 +1,6 @@
 //src\configs\navigation.js
 import React from "react";
-import { View } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { createDrawerNavigator, DrawerItemList } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -58,10 +58,10 @@ export function AppStack() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => (
-        <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}> 
           <DrawerItemList {...props} />
           <LogoutButton />
-        </View>
+        </SafeAreaView>
       )}
       screenOptions={{
         header: () => <Header />,
@@ -69,6 +69,7 @@ export function AppStack() {
           color: theme.colors.text.primary,
           fontFamily: fontFamily,
         },
+        drawerActiveTintColor: theme.colors.primary,
       }}
       initialRouteName="Home"
     >

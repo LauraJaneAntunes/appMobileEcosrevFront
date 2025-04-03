@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView,
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../contexts/ThemeContext';
 import { useFontSettings } from '../contexts/FontContext';
-import { User, CirclePower, Eye, EyeOff, Key, X, Save } from 'lucide-react-native';
+import { User, CirclePower, Eye, EyeOff, Key, Save, X } from 'lucide-react-native';
 import CustomAlert from '../components/CustomAlert';
 
 export default function ProfileScreen() {
@@ -17,19 +17,15 @@ export default function ProfileScreen() {
     profileImage: '',
   });
 
-  const [passwords, setPasswords] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmNewPassword: '',
-  });
-
+  const [passwordAtual, setPasswordAtual] = useState('');
+  const [novaSenha, setNovaSenha] = useState('');
+  const [confirmarNovaSenha, setConfirmarNovaSenha] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+  const [showPasswordAtual, setShowPasswordAtual] = useState(true); // Inicialmente oculto
+  const [showNovaSenha, setShowNovaSenha] = useState(true);     // Inicialmente oculto
+  const [showConfirmarNovaSenha, setShowConfirmarNovaSenha] = useState(true); // Inicialmente oculto
   const [isLoading, setIsLoading] = useState(true);
-  const [text, setText] = useState('');
-  
+
   // Estados para os CustomAlerts
   const [alertConfig, setAlertConfig] = useState({
     visible: false,
@@ -70,17 +66,6 @@ export default function ProfileScreen() {
     }
   };
 
-  const resetPasswordFields = () => {
-    setPasswords({
-      currentPassword: '',
-      newPassword: '',
-      confirmNewPassword: '',
-    });
-    setShowCurrentPassword(false);
-    setShowNewPassword(false);
-    setShowConfirmNewPassword(false);
-  };
-
   // Função genérica para mostrar alertas
   const showAlert = ({ title, message, confirmText = 'OK', cancelText = '', onConfirm = () => {}, confirmColor = theme.colors.primary }) => {
     setAlertConfig({
@@ -100,47 +85,36 @@ export default function ProfileScreen() {
   };
 
   const handleSavePassword = () => {
-    // Validar campos vazios
-    if (!passwords.currentPassword || !passwords.newPassword || !passwords.confirmNewPassword) {
-      showAlert({
-        title: 'Erro',
-        message: 'Todos os campos de senha são obrigatórios.',
-        confirmColor: theme.colors.error
-      });
+    if (!passwordAtual || !novaSenha || !confirmarNovaSenha) {
+      showAlert({ title: 'Erro', message: 'Todos os campos são obrigatórios.', confirmColor: theme.colors.error });
       return;
     }
-
-    // Validar se as senhas coincidem
-    if (passwords.newPassword !== passwords.confirmNewPassword) {
-      showAlert({
-        title: 'Erro',
-        message: 'A nova senha e a confirmação não coincidem!',
-        confirmColor: theme.colors.error
-      });
+    if (novaSenha !== confirmarNovaSenha) {
+      showAlert({ title: 'Erro', message: 'As senhas não coincidem.', confirmColor: theme.colors.error });
       return;
     }
-
-    // Validar força da senha (mínimo 8 caracteres)
-    if (passwords.newPassword.length < 6) {
-      showAlert({
-        title: 'Erro',
-        message: 'A nova senha deve ter no mínimo 8 caracteres.',
-        confirmColor: theme.colors.error
-      });
+    if (novaSenha.length < 6) {
+      showAlert({ title: 'Erro', message: 'A senha deve ter pelo menos 6 caracteres.', confirmColor: theme.colors.error });
       return;
     }
-
-    showAlert({
-      title: 'Sucesso',
-      message: 'Senha alterada com sucesso!',
-      onConfirm: closeModal,
-      confirmColor: theme.colors.success || theme.colors.primary
-    });
+    console.log('Senha Atual:', passwordAtual);
+    console.log('Nova Senha:', novaSenha);
+    console.log('Confirmar Nova Senha:', confirmarNovaSenha);
+    showAlert({ title: 'Sucesso', message: 'Senha alterada (simulada).', confirmColor: theme.colors.success });
+    setPasswordAtual('');
+    setNovaSenha('');
+    setConfirmarNovaSenha('');
+    setShowModal(false);
   };
-
+  // Função para limpar os inputs ao fechar/sair do modal
   const closeModal = () => {
     setShowModal(false);
-    resetPasswordFields();
+    setPasswordAtual('');
+    setNovaSenha('');
+    setConfirmarNovaSenha('');
+    setShowPasswordAtual(true);
+    setShowNovaSenha(true);
+    setShowConfirmarNovaSenha(true);
   };
 
   const handleLogout = () => {
@@ -154,45 +128,9 @@ export default function ProfileScreen() {
     });
   };
 
-  const handleChange = (text) => {
-    setText(text);
-  };
-
-
-  const PasswordField = ({ label, text, secureEntry, setSecureEntry, onChange, placeholder }) => (
-    <View style={styles.inputGroup}>
-      <Text style={[styles.label, { color: theme.colors.text.secondary, fontSize: fontSize.md }]}>
-        {label}
-      </Text>
-      <View style={[styles.passwordInputContainer, { borderColor: theme.colors.border }]}>
-        <TextInput
-          style={[
-            styles.passwordInput, 
-            { color: theme.colors.text.primary, fontSize: fontSize.md }
-          ]}
-          placeholder={placeholder}
-          placeholderTextColor={theme.colors.text.secondary}
-          secureTextEntry={secureEntry}
-          value={text}
-          onChangeText={handleChange}
-        />
-        <TouchableOpacity 
-          style={styles.eyeIcon} 
-          onPress={() => setSecureEntry(!secureEntry)}
-        >
-          {secureEntry ? (
-            <EyeOff size={20} color={theme.colors.text.secondary} />
-          ) : (
-            <Eye size={20} color={theme.colors.text.secondary} />
-          )}
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-
   return (
-    <ScrollView 
-      contentContainerStyle={styles.scrollContainer} 
+    <ScrollView
+      contentContainerStyle={styles.scrollContainer}
       style={{ backgroundColor: theme.colors.background }}
     >
       <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -218,12 +156,12 @@ export default function ProfileScreen() {
             </Text>
             <TextInput
               style={[
-                styles.input, 
-                { 
-                  borderColor: theme.colors.border, 
-                  color: theme.colors.text.primary, 
+                styles.input,
+                {
+                  borderColor: theme.colors.border,
+                  color: theme.colors.text.primary,
                   fontSize: fontSize.md,
-                  backgroundColor: theme.colors.inputBackground || theme.colors.background
+                  backgroundColor: theme.colors.background
                 }
               ]}
               value={userData.nome}
@@ -239,12 +177,12 @@ export default function ProfileScreen() {
             </Text>
             <TextInput
               style={[
-                styles.input, 
-                { 
-                  borderColor: theme.colors.border, 
-                  color: theme.colors.text.primary, 
+                styles.input,
+                {
+                  borderColor: theme.colors.border,
+                  color: theme.colors.text.primary,
                   fontSize: fontSize.md,
-                  backgroundColor: theme.colors.inputBackground || theme.colors.background
+                  backgroundColor: theme.colors.background
                 }
               ]}
               value={userData.email}
@@ -257,9 +195,8 @@ export default function ProfileScreen() {
           </View>
 
           <View style={[styles.passwordContainer, { backgroundColor: theme.colors.cardAlt || theme.colors.surface }]}>
-
-            <TouchableOpacity 
-              style={[styles.button, { backgroundColor: theme.colors.primary }]} 
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: theme.colors.primary }]}
               onPress={() => setShowModal(true)}
             >
               <Key size={24} color={theme.colors.text.inverse} style={{ marginRight: 8 }} />
@@ -270,8 +207,8 @@ export default function ProfileScreen() {
           </View>
         </View>
 
-        <TouchableOpacity 
-          style={[styles.logoutButton, { borderColor: theme.colors.error }]} 
+        <TouchableOpacity
+          style={[styles.logoutButton, { borderColor: theme.colors.error }]}
           onPress={handleLogout}
         >
           <CirclePower size={24} color={theme.colors.error} />
@@ -295,40 +232,91 @@ export default function ProfileScreen() {
                   </TouchableOpacity>
                 </View>
 
-                <PasswordField 
-                  label="Senha Atual"
-                  value={passwords.currentPassword}
-                  secureEntry={showCurrentPassword}
-                  setSecureEntry={setShowCurrentPassword}
-                  onChange={(text) => setPasswords({ ...passwords, currentPassword: text })}
-                  placeholder="Digite sua senha atual"
-                />
+                <View style={styles.inputGroup}>
+                  <Text style={[styles.label, { color: theme.colors.text.secondary, fontSize: fontSize.md }]}>
+                    Senha Atual
+                  </Text>
+                  <View style={[styles.passwordInputContainer, { borderColor: theme.colors.border }]}>
+                    <TextInput
+                      style={[styles.passwordInput, { color: theme.colors.text.primary, fontSize: fontSize.md }]}
+                      placeholder="Digite sua senha atual"
+                      placeholderTextColor={theme.colors.text.secondary}
+                      secureTextEntry={showPasswordAtual}
+                      value={passwordAtual}
+                      onChangeText={setPasswordAtual}
+                    />
+                    <TouchableOpacity
+                      style={styles.eyeIcon}
+                      onPress={() => setShowPasswordAtual(!showPasswordAtual)}
+                    >
+                      {!showPasswordAtual ? (
+                        <Eye size={20} color={theme.colors.text.secondary} />
+                      ) : (
+                        <EyeOff size={20} color={theme.colors.text.secondary} />
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                </View>
 
-                <PasswordField 
-                  label="Nova Senha"
-                  value={passwords.newPassword}
-                  secureEntry={showNewPassword}
-                  setSecureEntry={setShowNewPassword}
-                  onChange={(text) => setPasswords({ ...passwords, newPassword: text })}
-                  placeholder="Digite sua nova senha"
-                />
+                <View style={styles.inputGroup}>
+                  <Text style={[styles.label, { color: theme.colors.text.secondary, fontSize: fontSize.md }]}>
+                    Nova Senha
+                  </Text>
+                  <View style={[styles.passwordInputContainer, { borderColor: theme.colors.border }]}>
+                    <TextInput
+                      style={[styles.passwordInput, { color: theme.colors.text.primary, fontSize: fontSize.md }]}
+                      placeholder="Digite sua nova senha"
+                      placeholderTextColor={theme.colors.text.secondary}
+                      secureTextEntry={showNovaSenha}
+                      value={novaSenha}
+                      onChangeText={setNovaSenha}
+                    />
+                    <TouchableOpacity
+                      style={styles.eyeIcon}
+                      onPress={() => setShowNovaSenha(!showNovaSenha)}
+                    >
+                      {!showNovaSenha ? (
+                        <Eye size={20} color={theme.colors.text.secondary} />
+                      ) : (
+                        <EyeOff size={20} color={theme.colors.text.secondary} />
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                </View>
 
-                <PasswordField 
-                  label="Confirmar Nova Senha"
-                  value={passwords.confirmNewPassword}
-                  secureEntry={showConfirmNewPassword}
-                  setSecureEntry={setShowConfirmNewPassword}
-                  onChange={(text) => setPasswords({ ...passwords, confirmNewPassword: text })}
-                  placeholder="Confirme sua nova senha"
-                />
+                <View style={styles.inputGroup}>
+                  <Text style={[styles.label, { color: theme.colors.text.secondary, fontSize: fontSize.md }]}>
+                    Confirmar Nova Senha
+                  </Text>
+                  <View style={[styles.passwordInputContainer, { borderColor: theme.colors.border }]}>
+                    <TextInput
+                      style={[styles.passwordInput, { color: theme.colors.text.primary, fontSize: fontSize.md }]}
+                      placeholder="Confirme sua nova senha"
+                      placeholderTextColor={theme.colors.text.secondary}
+                      secureTextEntry={showConfirmarNovaSenha}
+                      value={confirmarNovaSenha}
+                      onChangeText={setConfirmarNovaSenha}
+                    />
+                    <TouchableOpacity
+                      style={styles.eyeIcon}
+                      onPress={() => setShowConfirmarNovaSenha(!showConfirmarNovaSenha)}
+                    >
+                      {!showConfirmarNovaSenha ? (
+                        <Eye size={20} color={theme.colors.text.secondary} />
+                      ) : (
+                        <EyeOff size={20} color={theme.colors.text.secondary} />
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                </View>
 
-                <TouchableOpacity 
-                  style={[styles.saveButton, { backgroundColor: theme.colors.primary }]} 
+                <TouchableOpacity
+                  style={[styles.saveButton, { backgroundColor: theme.colors.primary }]}
                   onPress={handleSavePassword}
                 >
-                  <Save  size={24} color={theme.colors.text.inverse} style={{ marginRight: 8 }} />
+                  <Save size={24} color={theme.colors.text.inverse} style={{ marginRight: 8 }} />
                   <Text style={[styles.buttonText, { color: theme.colors.text.inverse, fontSize: fontSize.md }]}>
-                    Salvar
+                    Salvar Senha
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -482,7 +470,6 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   eyeIcon: {
-    paddingHorizontal: 12,
+    padding: 10,
   },
-
 });

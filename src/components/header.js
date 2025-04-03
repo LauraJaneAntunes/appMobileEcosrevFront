@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, StatusBar, Platform } from "react-native";
+import { StyleSheet, View, Text, StatusBar, Platform, SafeAreaView } from "react-native";
 import { useTheme } from "../contexts/ThemeContext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animation from "./Animation";
