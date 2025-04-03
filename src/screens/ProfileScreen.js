@@ -35,6 +35,7 @@ export default function ProfileScreen() {
     cancelText: '',
     onConfirm: () => {},
     confirmColor: '',
+    showCancelButton: true,
   });
 
   useEffect(() => {
@@ -59,15 +60,24 @@ export default function ProfileScreen() {
         title: 'Erro',
         message: 'Não foi possível carregar os dados do perfil.',
         confirmText: 'OK',
-        confirmColor: theme.colors.error
+        confirmColor: theme.colors.error,
+        showCancelButton: false,
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Função genérica para mostrar alertas
-  const showAlert = ({ title, message, confirmText = 'OK', cancelText = '', onConfirm = () => {}, confirmColor = theme.colors.primary }) => {
+  // Função genérica para mostrar alertas, agora com controle de botão único
+  const showAlert = ({ 
+    title, 
+    message, 
+    confirmText = 'OK', 
+    cancelText = 'Cancelar', 
+    onConfirm = () => {}, 
+    confirmColor = theme.colors.primary,
+    showCancelButton = true
+  }) => {
     setAlertConfig({
       visible: true,
       title,
@@ -75,37 +85,58 @@ export default function ProfileScreen() {
       confirmText,
       cancelText,
       onConfirm,
-      confirmColor
+      confirmColor,
+      showCancelButton,
+      onConfirm: () => {
+        setAlertConfig((prev) => ({ ...prev, visible: false }));
+        onConfirm();
+      }
     });
-  };
-
-  // Função para fechar o alerta
-  const closeAlert = () => {
-    setAlertConfig(prev => ({ ...prev, visible: false }));
   };
 
   const handleSavePassword = () => {
     if (!passwordAtual || !novaSenha || !confirmarNovaSenha) {
-      showAlert({ title: 'Erro', message: 'Todos os campos são obrigatórios.', confirmColor: theme.colors.error });
+      showAlert({ 
+        title: 'Erro', 
+        message: 'Todos os campos são obrigatórios.', 
+        confirmColor: theme.colors.error, 
+        showCancelButton: false 
+      });
       return;
     }
     if (novaSenha !== confirmarNovaSenha) {
-      showAlert({ title: 'Erro', message: 'As senhas não coincidem.', confirmColor: theme.colors.error });
+      showAlert({ 
+        title: 'Erro', 
+        message: 'As senhas não coincidem.', 
+        confirmColor: theme.colors.error, 
+        showCancelButton: false 
+      });
       return;
     }
     if (novaSenha.length < 6) {
-      showAlert({ title: 'Erro', message: 'A senha deve ter pelo menos 6 caracteres.', confirmColor: theme.colors.error });
+      showAlert({ 
+        title: 'Erro', 
+        message: 'A senha deve ter pelo menos 6 caracteres.', 
+        confirmColor: theme.colors.error, 
+        showCancelButton: false 
+      });
       return;
     }
     console.log('Senha Atual:', passwordAtual);
     console.log('Nova Senha:', novaSenha);
     console.log('Confirmar Nova Senha:', confirmarNovaSenha);
-    showAlert({ title: 'Sucesso', message: 'Senha alterada (simulada).', confirmColor: theme.colors.success });
+    showAlert({ 
+      title: 'Sucesso', 
+      message: 'Senha alterada com sucesso.', 
+      confirmColor: theme.colors.sucess, 
+      showCancelButton: false 
+    });
     setPasswordAtual('');
     setNovaSenha('');
     setConfirmarNovaSenha('');
     setShowModal(false);
   };
+
   // Função para limpar os inputs ao fechar/sair do modal
   const closeModal = () => {
     setShowModal(false);
@@ -124,7 +155,8 @@ export default function ProfileScreen() {
       confirmText: 'Sair',
       cancelText: 'Cancelar',
       confirmColor: theme.colors.error,
-      onConfirm: () => navigation.replace('Login')
+      onConfirm: () => navigation.navigate('Login'),
+      showCancelButton: true
     });
   };
 
@@ -333,8 +365,9 @@ export default function ProfileScreen() {
         confirmText={alertConfig.confirmText}
         cancelText={alertConfig.cancelText}
         onConfirm={alertConfig.onConfirm}
-        onClose={closeAlert}
         confirmColor={alertConfig.confirmColor}
+        showCancelButton={alertConfig.showCancelButton}
+        singleButtonText={alertConfig.confirmText || "OK"}
       />
     </ScrollView>
   );

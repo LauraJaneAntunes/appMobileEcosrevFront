@@ -43,7 +43,7 @@ export default function Register() {
       >
         <TouchableOpacity
           style={[styles.button, { backgroundColor: theme.colors.primary }]}
-          onPress={() => {}}
+          onPress={() => { }}
         >
           <Text style={[styles.buttonText, { color: theme.colors.text.inverse, fontSize: fontSize.md }]}>Cadastrar</Text>
         </TouchableOpacity>
@@ -55,6 +55,16 @@ export default function Register() {
       >
         <Text style={[styles.linkText, { color: theme.colors.primary, fontSize: fontSize.sm }]}>Já tem uma conta? Faça login</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Home')}
+        style={styles.link}
+      >
+        <Text style={[styles.linkText, { color: theme.colors.primary, fontSize: fontSize.sm }]}>
+          Voltar para Home
+        </Text>
+      </TouchableOpacity>
+
     </View>
   );
 }

@@ -1,4 +1,3 @@
-//src\components\CustomAlert.js
 import React from "react";
 import { Modal, View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions } from "react-native";
 import { useTheme } from "../contexts/ThemeContext";
@@ -13,7 +12,9 @@ const CustomAlert = ({
   cancelText = "Cancelar",
   confirmText = "Confirmar",
   confirmColor,
-  cancelColor 
+  cancelColor,
+  showCancelButton = true,
+  singleButtonText = "OK"
 }) => {
   const { colors } = useTheme();
   const { fontSize, fontFamily } = useFontSettings();
@@ -85,48 +86,76 @@ const CustomAlert = ({
             {message}
           </Text>
 
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[
-                styles.button, 
-                styles.cancelButton,
-                { borderColor: buttonCancelColor }
-              ]}
-              onPress={onClose}
-              activeOpacity={0.7}
-            >
-              <Text 
-                style={{ 
-                  color: buttonCancelColor, 
-                  fontSize: fontSize.md, 
-                  fontFamily,
-                  fontWeight: '500'
-                }}
-              >
-                {cancelText}
-              </Text>
-            </TouchableOpacity>
+          <View style={[
+            styles.buttonContainer,
+            !showCancelButton && styles.singleButtonContainer
+          ]}>
+            {showCancelButton ? (
+              <>
+                <TouchableOpacity
+                  style={[
+                    styles.button, 
+                    styles.cancelButton,
+                    { borderColor: buttonCancelColor }
+                  ]}
+                  onPress={onClose}
+                  activeOpacity={0.7}
+                >
+                  <Text 
+                    style={{ 
+                      color: buttonCancelColor, 
+                      fontSize: fontSize.md, 
+                      fontFamily,
+                      fontWeight: '500'
+                    }}
+                  >
+                    {cancelText}
+                  </Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[
-                styles.button, 
-                styles.confirmButton,
-                { backgroundColor: buttonConfirmColor }
-              ]}
-              onPress={onConfirm}
-              activeOpacity={0.7}
-            >
-              <Text 
-                style={{ 
-                  color: colors.onError, 
-                  fontSize: fontSize.md, 
-                  fontFamily,
-                  fontWeight: '600' 
-                }}
+                <TouchableOpacity
+                  style={[
+                    styles.button, 
+                    styles.confirmButton,
+                    { backgroundColor: buttonConfirmColor }
+                  ]}
+                  onPress={onConfirm}
+                  activeOpacity={0.7}
+                >
+                  <Text 
+                    style={{ 
+                      color: colors.onError, 
+                      fontSize: fontSize.md, 
+                      fontFamily,
+                      fontWeight: '600' 
+                    }}
+                  >
+                    {confirmText}
+                  </Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <TouchableOpacity
+                style={[
+                  styles.button, 
+                  styles.singleButton,
+                  { backgroundColor: buttonConfirmColor }
+                ]}
+                onPress={onConfirm || onClose} // Usa onConfirm se estiver definido, senão usa onClose
+                activeOpacity={0.7}
               >
-                {confirmText}
-              </Text>
-            </TouchableOpacity>
+                <Text 
+                  style={{ 
+                    color: colors.onError, 
+                    fontSize: fontSize.md, 
+                    fontFamily,
+                    fontWeight: '600' 
+                  }}
+                >
+                  {singleButtonText}
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </Animated.View>
       </View>
@@ -176,6 +205,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
   },
+  singleButtonContainer: {
+    justifyContent: "center",
+  },
   button: {
     flex: 1,
     padding: 12,
@@ -188,6 +220,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   confirmButton: {
+    elevation: 2,
+  },
+  singleButton: {
+    maxWidth: "60%",
     elevation: 2,
   },
 });
