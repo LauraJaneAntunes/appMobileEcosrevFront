@@ -1,9 +1,8 @@
-//src\screens\HomeScreen.js
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel from '../components/Carousel';
-import { Recycle } from 'lucide-react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../contexts/ThemeContext';
 import { useFontSettings } from '../contexts/FontContext';
@@ -19,32 +18,26 @@ export default function HomeScreen() {
     {
       imageSrc: require('../../assets/imagem1.jpg'),
       altText: "Imagem 1",
-      // caption: "Descubra como reciclar eletrônicos de forma sustentável!",
     },
     {
       imageSrc: require('../../assets/backgroundImg.jpeg'),
       altText: "Imagem 2",
-      // caption: "Transforme resíduos em pontos e conquiste prêmios!",
     },
     {
       imageSrc: require('../../assets/macawImg.jpeg'),
       altText: "Imagem 3",
-      // caption: "Junte-se à mudança por um planeta mais limpo.",
     },
     {
       imageSrc: require('../../assets/toucanImg.jpeg'),
       altText: "Imagem 4",
-      // caption: "Converta resíduos em oportunidades e ajude a preservar o meio ambiente.",
     },
     {
       imageSrc: require('../../assets/beeImg.jpeg'),
       altText: "Imagem 5",
-      // caption: "Dê o primeiro passo para um futuro mais sustentável com a reciclagem responsável.",
     },
     {
       imageSrc: require('../../assets/imagem3.jpg'),
       altText: "Imagem 6",
-      // caption: "Recicle hoje para transformar o amanhã em um lugar melhor para todos.",
     },
   ];
 
@@ -54,19 +47,23 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <StatusBar
+        backgroundColor={theme.colors.primary}
+        barStyle={theme.colors.text.inverse === '#FFFFFF' ? 'light-content' : 'dark-content'}
+      />
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <Carousel slides={carouselSlides} />
 
-        {/* Introduçao */}
+        {/* Introdução */}
         <View style={[styles.introductionContainer, { backgroundColor: theme.colors.surface }]}>
           <Text style={[styles.sectionTitle, { color: theme.colors.primary, fontSize: fontSize.lg }]}>Bem-vindo ao EcosRev</Text>
-          <Text style={[styles.introText, { color: theme.colors.text.primary, fontSize: fontSize.md, fontWeight: 'bold' }]}>
+          <Text style={[styles.introText, { color: theme.colors.text.primary, fontSize: fontSize.md }]}>
             Uma plataforma inovadora para reciclagem de resíduo eletrônico e troca de pontos por recompensas. Junte-se a
             nós e faça parte da mudança!
           </Text>
 
-          {/* Botão */}
+          {/* Botão: Começar Agora */}
           <TouchableOpacity
             style={[styles.ctaButton, { backgroundColor: theme.colors.primary }]}
             onPress={navigateToLogin}
@@ -80,18 +77,26 @@ export default function HomeScreen() {
           <Text style={[styles.sectionTitle, { color: theme.colors.text.primary, fontSize: fontSize.lg }]}>O que oferecemos</Text>
           <View style={styles.servicesGrid}>
             <View style={styles.serviceItem}>
-              <Recycle size={60} color={theme.colors.primary} /> {/* Use o ícone Recycle do lucide-react-native */}
-              <Text style={[styles.serviceTitle, { color: theme.colors.text.primary, fontSize: fontSize.md }]}>
-                Reciclagem de Eletrônicos
-              </Text>
-              <Text style={[styles.serviceText, { color: theme.colors.text.secondary, fontSize: fontSize.sm }]}>
-                Recicle seus aparelhos eletrônicos de forma segura e responsável.
-              </Text>
+              <MaterialIcons name="recycling" size={60} color={theme.colors.primary} />
+              <Text style={[styles.serviceTitle, { color: theme.colors.text.primary, fontSize: fontSize.md }]}>Reciclagem de Eletrônicos</Text>
+              <Text style={[styles.serviceText, { color: theme.colors.text.secondary, fontSize: fontSize.sm }]}>Recicle seus aparelhos eletrônicos de forma segura e responsável.</Text>
+            </View>
+
+            <View style={styles.serviceItem}>
+              <MaterialIcons name="monetization-on" size={60} color={theme.colors.primary} />
+              <Text style={[styles.serviceTitle, { color: theme.colors.text.primary, fontSize: fontSize.md }]}>Acúmulo de Pontos</Text>
+              <Text style={[styles.serviceText, { color: theme.colors.text.secondary, fontSize: fontSize.sm }]}>Ganhe pontos a cada item reciclado e troque por prêmios.</Text>
+            </View>
+
+            <View style={styles.serviceItem}>
+              <MaterialIcons name="card-giftcard" size={60} color={theme.colors.primary} />
+              <Text style={[styles.serviceTitle, { color: theme.colors.text.primary, fontSize: fontSize.md }]}>Recompensas Exclusivas</Text>
+              <Text style={[styles.serviceText, { color: theme.colors.text.secondary, fontSize: fontSize.sm }]}>Troque seus pontos por descontos, produtos, serviços e muito mais.</Text>
             </View>
           </View>
         </View>
 
-        {/* Depoimentos */}
+        {/* Testemunhos */}
         <View style={[styles.testimonialsContainer, { backgroundColor: theme.colors.surface }]}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text.primary, fontSize: fontSize.lg }]}>Depoimentos</Text>
           <View style={styles.testimonialsGrid}>
@@ -100,9 +105,23 @@ export default function HomeScreen() {
                 "O EcosRev facilitou a reciclagem de eletrônicos na minha casa. Além de ajudar o meio ambiente,
                 ainda ganho recompensas!"
               </Text>
-              <Text style={[styles.testimonialAuthor, { color: theme.colors.text.secondary, fontSize: fontSize.sm }]}>
-                — Maria Silva
+              <Text style={[styles.testimonialAuthor, { color: theme.colors.text.secondary, fontSize: fontSize.sm }]}>— Maria Silva</Text>
+            </View>
+
+            <View style={[styles.testimonialItem, { backgroundColor: theme.colors.background }]}>
+              <Text style={[styles.testimonialText, { color: theme.colors.text.primary, fontSize: fontSize.md }]}>
+                "Uma excelente iniciativa! Agora meus filhos entendem a importância de reciclar e ainda se divertem
+                trocando pontos por prêmios."
               </Text>
+              <Text style={[styles.testimonialAuthor, { color: theme.colors.text.secondary, fontSize: fontSize.sm }]}>— Carlos Santos</Text>
+            </View>
+
+            <View style={[styles.testimonialItem, { backgroundColor: theme.colors.background }]}>
+              <Text style={[styles.testimonialText, { color: theme.colors.text.primary, fontSize: fontSize.md }]}>
+                "Simplesmente adoro! O sistema de pontos é muito gratificante e o suporte ao cliente é
+                fantástico."
+              </Text>
+              <Text style={[styles.testimonialAuthor, { color: theme.colors.text.secondary, fontSize: fontSize.sm }]}>— Ana Souza</Text>
             </View>
           </View>
         </View>
@@ -115,6 +134,14 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  header: {
+    padding: 15,
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   introductionContainer: {
     padding: 20,
@@ -161,12 +188,14 @@ const styles = StyleSheet.create({
   },
   serviceText: {
     textAlign: 'center',
+    fontSize: 14,
     paddingHorizontal: 10,
   },
   testimonialsGrid: {
     width: '100%',
   },
   testimonialItem: {
+    backgroundColor: '#ffffff',
     borderRadius: 8,
     padding: 15,
     marginBottom: 20,
@@ -178,6 +207,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  testimonialText: {
+    fontStyle: 'italic',
+    marginBottom: 10,
+    lineHeight: 22,
+  },
+  testimonialAuthor: {
+    textAlign: 'right',
+    fontWeight: 'bold',
   },
   footer: {
     padding: 15,
