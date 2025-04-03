@@ -1,10 +1,12 @@
-//src\configs
+//src\configs\navigation.js
 import React from "react";
 import { View } from "react-native";
 import { createDrawerNavigator, DrawerItemList } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { House, ArrowRightLeft, History, UserCog, Info, QrCode, LogIn } from "lucide-react-native";
+import { useTheme } from "../contexts/ThemeContext";
+import { useFontSettings } from "../contexts/FontContext";
 
 import HomeScreen from "../screens/HomeScreen";
 import BeneficiosScreen from "../screens/BenefitsScreen";
@@ -50,25 +52,92 @@ export function AuthStack() {
 
 // Stack do app autenticado
 export function AppStack() {
+  const theme = useTheme();
+  const { fontSize, fontFamily } = useFontSettings();
+
   return (
     <Drawer.Navigator
       drawerContent={(props) => (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
           <DrawerItemList {...props} />
           <LogoutButton />
         </View>
       )}
-      screenOptions={{ header: () => <Header /> }}
+      screenOptions={{
+        header: () => <Header />,
+        drawerLabelStyle: {
+          color: theme.colors.text.primary,
+          fontFamily: fontFamily,
+        },
+      }}
       initialRouteName="Home"
     >
-      <Drawer.Screen name="Home" component={TabScreens} options={{ title: "Início", drawerIcon: () => <House size={20} /> }} />
-      <Drawer.Screen name="Perfil" component={PerfilScreen} options={{ drawerIcon: () => <UserCog size={20} /> }} />
-      <Drawer.Screen name="Login" component={LoginScreen} options={{ title: "Entrar", drawerIcon: () => <LogIn size={20} /> }} />
-      <Drawer.Screen name="Troca" component={BeneficiosScreen} options={{ drawerIcon: () => <ArrowRightLeft size={20} /> }} />
-      <Drawer.Screen name="QrCode" component={QRCodeScannerScreen} options={{ drawerIcon: () => <QrCode size={20} /> }} />
-      <Drawer.Screen name="Historico" component={HistoricoScreen} options={{ title: "Histórico", drawerIcon: () => <History size={20} /> }} />
-      <Drawer.Screen name="Sobre" component={SobreScreen} options={{ drawerIcon: () => <Info size={20} /> }} />
-      <Drawer.Screen name="Configurações" component={ConfigScreen} options={{ drawerIcon: () => <UserCog size={20} /> }} />
+      <Drawer.Screen
+        name="Home"
+        component={TabScreens}
+        options={{
+          title: "Início",
+          drawerIcon: () => <House size={fontSize.md} color={theme.colors.primary} />,
+        }}
+      />
+
+      <Drawer.Screen
+        name="Perfil"
+        component={PerfilScreen}
+        options={{
+          drawerIcon: () => <UserCog size={fontSize.md} color={theme.colors.primary} />,
+        }}
+      />
+
+      <Drawer.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          title: "Entrar",
+          drawerIcon: () => <LogIn size={fontSize.md} color={theme.colors.primary} />,
+        }}
+      />
+
+      <Drawer.Screen
+        name="Troca"
+        component={BeneficiosScreen}
+        options={{
+          drawerIcon: () => <ArrowRightLeft size={fontSize.md} color={theme.colors.primary} />,
+        }}
+      />
+
+      <Drawer.Screen
+        name="QrCode"
+        component={QRCodeScannerScreen}
+        options={{
+          drawerIcon: () => <QrCode size={fontSize.md} color={theme.colors.primary} />,
+        }}
+      />
+
+      <Drawer.Screen
+        name="Historico"
+        component={HistoricoScreen}
+        options={{
+          title: "Histórico",
+          drawerIcon: () => <History size={fontSize.md} color={theme.colors.primary} />,
+        }}
+      />
+
+      <Drawer.Screen
+        name="Sobre"
+        component={SobreScreen}
+        options={{
+          drawerIcon: () => <Info size={fontSize.md} color={theme.colors.primary} />,
+        }}
+      />
+
+      <Drawer.Screen
+        name="Configurações"
+        component={ConfigScreen}
+        options={{
+          drawerIcon: () => <UserCog size={fontSize.md} color={theme.colors.primary} />,
+        }}
+      />
     </Drawer.Navigator>
   );
 }

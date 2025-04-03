@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView, Modal, Alert, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView, Modal, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../contexts/ThemeContext';
 import { useFontSettings } from '../contexts/FontContext';
-import { User, LogOut, Eye, EyeOff, Key, X } from 'lucide-react-native';
+import { User, CirclePower, Eye, EyeOff, Key, X, Save } from 'lucide-react-native';
+import CustomAlert from '../components/CustomAlert';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -28,6 +29,17 @@ export default function ProfileScreen() {
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [text, setText] = useState('');
+  
+  // Estados para os CustomAlerts
+  const [alertConfig, setAlertConfig] = useState({
+    visible: false,
+    title: '',
+    message: '',
+    confirmText: '',
+    cancelText: '',
+    onConfirm: () => {},
+    confirmColor: '',
+  });
 
   useEffect(() => {
     fetchUserData();
@@ -47,7 +59,12 @@ export default function ProfileScreen() {
       });
     } catch (error) {
       console.error('Erro ao obter os dados do usuário:', error);
-      Alert.alert('Erro', 'Não foi possível carregar os dados do perfil.');
+      showAlert({
+        title: 'Erro',
+        message: 'Não foi possível carregar os dados do perfil.',
+        confirmText: 'OK',
+        confirmColor: theme.colors.error
+      });
     } finally {
       setIsLoading(false);
     }
@@ -64,27 +81,61 @@ export default function ProfileScreen() {
     setShowConfirmNewPassword(false);
   };
 
+  // Função genérica para mostrar alertas
+  const showAlert = ({ title, message, confirmText = 'OK', cancelText = '', onConfirm = () => {}, confirmColor = theme.colors.primary }) => {
+    setAlertConfig({
+      visible: true,
+      title,
+      message,
+      confirmText,
+      cancelText,
+      onConfirm,
+      confirmColor
+    });
+  };
+
+  // Função para fechar o alerta
+  const closeAlert = () => {
+    setAlertConfig(prev => ({ ...prev, visible: false }));
+  };
+
   const handleSavePassword = () => {
     // Validar campos vazios
     if (!passwords.currentPassword || !passwords.newPassword || !passwords.confirmNewPassword) {
-      Alert.alert('Erro', 'Todos os campos de senha são obrigatórios.');
+      showAlert({
+        title: 'Erro',
+        message: 'Todos os campos de senha são obrigatórios.',
+        confirmColor: theme.colors.error
+      });
       return;
     }
 
     // Validar se as senhas coincidem
     if (passwords.newPassword !== passwords.confirmNewPassword) {
-      Alert.alert('Erro', 'A nova senha e a confirmação não coincidem!');
+      showAlert({
+        title: 'Erro',
+        message: 'A nova senha e a confirmação não coincidem!',
+        confirmColor: theme.colors.error
+      });
       return;
     }
 
     // Validar força da senha (mínimo 8 caracteres)
     if (passwords.newPassword.length < 6) {
-      Alert.alert('Erro', 'A nova senha deve ter no mínimo 8 caracteres.');
+      showAlert({
+        title: 'Erro',
+        message: 'A nova senha deve ter no mínimo 8 caracteres.',
+        confirmColor: theme.colors.error
+      });
       return;
     }
 
-    Alert.alert('Sucesso', 'Senha alterada com sucesso!');
-    closeModal();
+    showAlert({
+      title: 'Sucesso',
+      message: 'Senha alterada com sucesso!',
+      onConfirm: closeModal,
+      confirmColor: theme.colors.success || theme.colors.primary
+    });
   };
 
   const closeModal = () => {
@@ -93,14 +144,14 @@ export default function ProfileScreen() {
   };
 
   const handleLogout = () => {
-    Alert.alert(
-      'Confirmar Saída',
-      'Tem certeza que deseja sair?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Sair', onPress: () => navigation.replace('Login') },
-      ]
-    );
+    showAlert({
+      title: 'Confirmar Saída',
+      message: 'Tem certeza que deseja sair da conta?',
+      confirmText: 'Sair',
+      cancelText: 'Cancelar',
+      confirmColor: theme.colors.error,
+      onConfirm: () => navigation.replace('Login')
+    });
   };
 
   const handleChange = (text) => {
@@ -211,7 +262,7 @@ export default function ProfileScreen() {
               style={[styles.button, { backgroundColor: theme.colors.primary }]} 
               onPress={() => setShowModal(true)}
             >
-              <Key size={18} color={theme.colors.text.inverse} style={{ marginRight: 8 }} />
+              <Key size={24} color={theme.colors.text.inverse} style={{ marginRight: 8 }} />
               <Text style={[styles.buttonText, { color: theme.colors.text.inverse, fontSize: fontSize.md }]}>
                 Alterar Senha
               </Text>
@@ -220,12 +271,12 @@ export default function ProfileScreen() {
         </View>
 
         <TouchableOpacity 
-          style={[styles.logoutButton, { backgroundColor: theme.colors.error }]} 
+          style={[styles.logoutButton, { borderColor: theme.colors.error }]} 
           onPress={handleLogout}
         >
-          <LogOut size={24} color={theme.colors.text.inverse} />
-          <Text style={[styles.logoutText, { color: theme.colors.text.inverse, fontSize: fontSize.md }]}>
-            Sair
+          <CirclePower size={24} color={theme.colors.error} />
+          <Text style={[styles.logoutText, { color: theme.colors.error, fontSize: fontSize.md }]}>
+            Logout
           </Text>
         </TouchableOpacity>
       </View>
@@ -275,6 +326,7 @@ export default function ProfileScreen() {
                   style={[styles.saveButton, { backgroundColor: theme.colors.primary }]} 
                   onPress={handleSavePassword}
                 >
+                  <Save  size={24} color={theme.colors.text.inverse} style={{ marginRight: 8 }} />
                   <Text style={[styles.buttonText, { color: theme.colors.text.inverse, fontSize: fontSize.md }]}>
                     Salvar
                   </Text>
@@ -284,6 +336,18 @@ export default function ProfileScreen() {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
+
+      {/* CustomAlert Component */}
+      <CustomAlert
+        visible={alertConfig.visible}
+        title={alertConfig.title}
+        message={alertConfig.message}
+        confirmText={alertConfig.confirmText}
+        cancelText={alertConfig.cancelText}
+        onConfirm={alertConfig.onConfirm}
+        onClose={closeAlert}
+        confirmColor={alertConfig.confirmColor}
+      />
     </ScrollView>
   );
 }
@@ -353,6 +417,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
+    alignSelf: 'center',
     justifyContent: 'center',
     marginTop: 10,
   },
@@ -362,14 +427,24 @@ const styles = StyleSheet.create({
   logoutButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'center',
     justifyContent: 'center',
     padding: 15,
     borderRadius: 8,
-    marginTop: 20,
+    marginTop: 10,
+    borderWidth: 2,
   },
   logoutText: {
     marginLeft: 10,
     fontWeight: 'bold',
+  },
+  saveButton: {
+    flexDirection: 'row',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+    alignSelf: 'center'
   },
   modalContainer: {
     flex: 1,
@@ -409,10 +484,5 @@ const styles = StyleSheet.create({
   eyeIcon: {
     paddingHorizontal: 12,
   },
-  saveButton: {
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 20,
-  },
+
 });

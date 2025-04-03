@@ -126,7 +126,7 @@ const darkTheme = {
       border: '#333333',
       success: '#4CAF50',
       warning: '#FFC107',
-      info: '#2196F3',
+      info: '#a8c35f',
       shadow: '#fff',
     },
     spacing: {
