@@ -45,7 +45,7 @@ Este projeto esta sendo desenvolvido por uma equipe de estudantes do curso de De
 | Nome                          | GitHub                                               |
 | ----------------------------- | ---------------------------------------------------- |
 | *Gabriel Yamaoka Bernardes* | [YamaokaK](https://github.com/YamaokaK)                 |
-| *João Lucas Melo*          | [JoaoLucasMdO](https://github.com/JoaoLucasMdO)         |
+| *João Lucas Melo*           | [JoaoLucasMdO](https://github.com/JoaoLucasMdO)         |
 | *Laura Jane Antunes*        | [LauraJaneAntunes](https://github.com/LauraJaneAntunes) |
 | *Mariana Hirata*            | [marianakakimoto](https://github.com/marianakakimoto)   |
 | *Mateus Ferreira*           | [AEntropia](https://github.com/AEntropia)               |
@@ -222,6 +222,8 @@ APPMOBILECOSREVFRONT
 │   │   ├── Carousel.js
 │   │   ├── Header.js
 │   │   ├── LogoutButton.js
+|   ├── configs
+|   |   ├── navigation.js
 │   ├── contexts
 │   │   ├── AuthContext.js
 │   │   ├── FontContext.js
@@ -256,6 +258,7 @@ APPMOBILECOSREVFRONT
 - **`assets`**: Armazena imagens, fontes e outros arquivos estáticos.
 - **`node_modules`**: Diretório com todas as dependências do projeto gerenciadas pelo npm ou yarn.
 - **`src/components`**: Componentes reutilizáveis usados em diferentes partes do aplicativo.
+- **`src/configs`**: Arquivos de configuração globais, como navegação.
 - **`src/contexts`**: Configuração e gerenciamento de contexto (como autenticação e temas).
 - **`src/screens`**: Telas individuais do aplicativo.
 - **`src/utils`**: Funções utilitárias, temas e esquemas de validação.
