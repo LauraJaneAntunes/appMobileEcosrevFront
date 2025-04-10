@@ -271,3 +271,36 @@ APPMOBILECOSREVFRONT
   - `README.md`: Este arquivo explicativo do projeto.
 
 ---
+
+✅ Funcionalidades Implementadas
+
+Login e Registro de Usuário (mockado)
+
+Escaneamento de QR Code
+
+Sistema de pontos por interação
+
+Visualização de histórico de atividades
+
+Persistência de dados local com AsyncStorage
+
+Temas e fontes customizadas via contexto
+
+Navegação com Tabs e Stacks
+
+Integração com câmera (Expo Camera)
+
+Experiência UX com animações e ícones modernos
+
+🧪 Plano de Testes (Mock)
+Como não houve aprofundamento em testes automatizados durante o semestre, foi adotado um plano manual baseado em fluxo de usuário, cobrindo:
+
+Fluxo de autenticação
+
+Navegação entre telas
+
+Validação de formulários
+
+Persistência de dados com AsyncStorage
+
+Comportamento esperado ao escanear QR Code
