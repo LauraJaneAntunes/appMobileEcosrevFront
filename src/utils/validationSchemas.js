@@ -1,15 +1,26 @@
 // src/utils/validationSchemas.js
 import * as Yup from 'yup';
 
-// Define o esquema de validação para o formulário de registro.
+// Função de teste para simular proteção contra XSS/injeções
+const noMaliciousContent = (label = 'Campo') =>
+  Yup.string().test(
+    'no-malicious-content',
+    `${label} contém caracteres potencialmente maliciosos`,
+    value => {
+      if (!value) return true;
+      return !/[<>{}()"';`]|script|select|insert|update|delete|drop|--/i.test(value);
+    }
+  );
+
+// Formulário de registro
 export const registerSchema = Yup.object().shape({
-  name: Yup.string()
+  name: noMaliciousContent('Nome')
     .min(2, 'Nome muito curto')
     .required('Nome é obrigatório'),
-  email: Yup.string()
+  email: noMaliciousContent('Email')
     .email('Email inválido')
     .required('Email é obrigatório'),
-  password: Yup.string()
+  password: noMaliciousContent('Senha')
     .min(6, 'A senha deve ter no mínimo 6 caracteres')
     .matches(/[A-Z]/, 'A senha deve conter pelo menos uma letra maiúscula')
     .matches(/[0-9]/, 'A senha deve conter pelo menos um número')
@@ -17,26 +28,27 @@ export const registerSchema = Yup.object().shape({
     .required('A Senha é obrigatória'),
 });
 
-// Define o esquema de validação para o formulário de login.
+// Formulário de login
 export const loginSchema = Yup.object().shape({
-  email: Yup.string()
+  email: noMaliciousContent('Email')
     .email('Email inválido')
     .required('O email é obrigatório'),
-  password: Yup.string()
+  password: noMaliciousContent('Senha')
     .required('A Senha é obrigatória'),
 });
 
-// Define o esquema de validação para o formulário de recuperação de senha.
+// Formulário de recuperação de senha
 export const forgotPasswordSchema = Yup.object().shape({
-  email: Yup.string()
+  email: noMaliciousContent('Email')
     .email('Email inválido')
     .required('O email é obrigatório'),
 });
 
-// Define o esquema de validação para o formulário de atualização de senha (no perfil).
+// Atualização de senha no perfil
 export const passwordUpdateSchema = Yup.object().shape({
-  currentPassword: Yup.string().required('Senha atual é obrigatória'),
-  newPassword: Yup.string()
+  currentPassword: noMaliciousContent('Senha atual')
+    .required('Senha atual é obrigatória'),
+  newPassword: noMaliciousContent('Nova senha')
     .min(6, 'A nova senha deve ter no mínimo 6 caracteres')
     .matches(/[A-Z]/, 'A senha deve conter pelo menos uma letra maiúscula', { excludeEmptyString: true })
     .matches(/[0-9]/, 'A senha deve conter pelo menos um número', { excludeEmptyString: true })
