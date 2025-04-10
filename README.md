@@ -210,47 +210,7 @@ Para facilitar o processo de desenvolvimento:
 
 Abaixo está a estrutura completa do projeto, detalhando os diretórios e arquivos organizados:
 
-APPMOBILECOSREVFRONT
-├── .expo
-├── assets
-├── node_modules
-├── src
-│   ├── components
-│   │   ├── Animation.js
-│   │   ├── AuthForm.js
-│   │   ├── BottomNavigation.js
-│   │   ├── Carousel.js
-│   │   ├── Header.js
-│   │   ├── LogoutButton.js
-|   ├── configs
-|   |   ├── navigation.js
-│   ├── contexts
-│   │   ├── AuthContext.js
-│   │   ├── FontContext.js
-│   │   ├── ThemeContext.js
-│   ├── screens
-│   │   ├── AboutScreen.js
-│   │   ├── BenefitsScreen.js
-│   │   ├── ConfigScreen.js
-│   │   ├── ForgotPassword.js
-│   │   ├── HistoryScreen.js
-│   │   ├── HomeScreen.js
-│   │   ├── LoadingScreen.js
-│   │   ├── LoginScreen.js
-│   │   ├── ProfileScreen.js
-│   │   ├── QRCodeScannerScreen.js
-│   │   ├── RegisterScreen.js
-│   ├── utils
-│   │   ├── theme.js
-│   │   ├── validationSchemas.js
-├── .gitignore
-├── App.js
-├── app.json
-├── babelconfig.js
-├── index.js
-├── package-lock.json
-├── package.json
-├── README.md
+<pre> ```text APPMOBILECOSREVFRONT ├── .expo ├── assets ├── node_modules ├── src │ ├── components │ │ ├── Animation.js │ │ ├── AuthForm.js │ │ ├── BottomNavigation.js │ │ ├── Carousel.js │ │ ├── Header.js │ │ ├── LogoutButton.js │ ├── configs │ │ ├── navigation.js │ ├── contexts │ │ ├── AuthContext.js │ │ ├── FontContext.js │ │ ├── ThemeContext.js │ ├── screens │ │ ├── AboutScreen.js │ │ ├── BenefitsScreen.js │ │ ├── ConfigScreen.js │ │ ├── ForgotPassword.js │ │ ├── HistoryScreen.js │ │ ├── HomeScreen.js │ │ ├── LoadingScreen.js │ │ ├── LoginScreen.js │ │ ├── ProfileScreen.js │ │ ├── QRCodeScannerScreen.js │ │ ├── RegisterScreen.js │ ├── utils │ │ ├── theme.js │ │ ├── validationSchemas.js ├── .gitignore ├── App.js ├── app.json ├── babelconfig.js ├── index.js ├── package-lock.json ├── package.json ├── README.md ``` </pre>
 
 ### 📋 Descrição Geral:
 
