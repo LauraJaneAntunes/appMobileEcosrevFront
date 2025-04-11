@@ -45,14 +45,12 @@ Este projeto esta sendo desenvolvido por uma equipe de estudantes do curso de De
 | Nome                          | GitHub                                               |
 | ----------------------------- | ---------------------------------------------------- |
 | *Gabriel Yamaoka Bernardes* | [YamaokaK](https://github.com/YamaokaK)                 |
-| *João Lucas Melo*           | [JoaoLucasMdO](https://github.com/JoaoLucasMdO)         |
+| *João Lucas Melo*          | [JoaoLucasMdO](https://github.com/JoaoLucasMdO)         |
 | *Laura Jane Antunes*        | [LauraJaneAntunes](https://github.com/LauraJaneAntunes) |
 | *Mariana Hirata*            | [marianakakimoto](https://github.com/marianakakimoto)   |
 | *Mateus Ferreira*           | [AEntropia](https://github.com/AEntropia)               |
 
 ---
-
-
 
 ## 🚀 Como Rodar o Projeto
 
@@ -96,6 +94,8 @@ cd appMobileEcosrevFront
 ```
    yarn install
 ```
+
+---
 
 ### ▶️ Executando o Projeto
 
@@ -254,7 +254,6 @@ APPMOBILECOSREVFRONT
 ├── README.md
 ```
 
-
 ### 📋 Descrição Geral:
 
 - **`.expo`**: Diretório gerado automaticamente pelo Expo contendo configurações do projeto.
@@ -295,6 +294,8 @@ Integração com câmera (Expo Camera)
 
 Experiência UX com animações e ícones modernos
 
+---
+
 🧪 Plano de Testes (Mock)
 Como não houve aprofundamento em testes automatizados durante o semestre, foi adotado um plano manual baseado em fluxo de usuário, cobrindo:
 
@@ -307,3 +308,62 @@ Validação de formulários
 Persistência de dados com AsyncStorage
 
 Comportamento esperado ao escanear QR Code
+
+---
+
+## Segurança da Aplicação
+
+Garantir a segurança dos dados e da navegação é uma prioridade no  **Ecosrev** . Abaixo estão os riscos identificados e as ações adotadas para mitigar vulnerabilidades:
+
+### 🚨 Vulnerabilidades Mapeadas
+
+| Vulnerabilidade                          | Impacto 🚩                           | Probabilidade 📊 | Severidade 🔥 |
+| ---------------------------------------- | ------------------------------------ | ---------------- | ------------- |
+| XSS em dados exibidos no app             | Execução de scripts maliciosos     | Média           | Alta          |
+| Dados sensíveis no AsyncStorage         | Vazamento de informações           | Média           | Alta          |
+| Rotas desprotegidas                      | Acesso indevido a telas restritas    | Alta             | Média        |
+| Inputs não validados ou sanitizados     | Envio de dados maliciosos ao backend | Média           | Alta          |
+| Permissões excessivas de câmera/mídia | Acesso indevido a recursos           | Baixa            | Média        |
+| Tokens sem expiração                   | Sessões comprometidas               | Média           | Alta          |
+
+---
+
+### 🛡️ Ações Implementadas
+
+#### ✅ Proteção Contra XSS
+
+* Evitamos renderização direta de dados inseguros.
+* Dados dinâmicos são sempre tratados antes da exibição.
+* Trabalhamos com renderização segura, sem uso de `dangerouslySetInnerHTML`.
+
+#### ✅ Segurança no Armazenamento
+
+* Utilização de `react-native-encrypted-storage` para armazenar dados sensíveis com criptografia.
+* Tokens e dados temporários possuem validade definida.
+* Senhas e chaves nunca são salvas localmente.
+
+#### ✅ Autenticação e Rotas Seguras
+
+* Implementação de middleware para proteger rotas sensíveis.
+* Uso de **JWT com expiração curta** e  **tokens de refresh rotativos** .
+* Validação de sessão com fingerprint do dispositivo.
+
+#### ✅ Validação de Inputs
+
+* Todos os formulários utilizam **Formik + Yup** para validação robusta.
+* Sanitização de dados antes de envio ao backend.
+* Limites e formatos aplicados em todos os campos.
+
+#### ✅ Gerenciamento de Permissões
+
+* Permissões solicitadas de forma granular e consciente.
+* Acesso à câmera e arquivos sempre com consentimento claro do usuário.
+* Metadados são limpos antes de qualquer upload de mídia.
+
+---
+
+✨ Estamos comprometidos com uma experiência **segura, confiável e transparente** para todos os usuários. Segurança faz parte da base do Ecosrev — para garantir que você colabore com o meio ambiente sem abrir mão da sua privacidade. 🌱🔒
+
+---
+
+RECOMENDAÇÕES PRA UPDATE FUTURO
