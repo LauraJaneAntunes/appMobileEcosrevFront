@@ -77,15 +77,6 @@ export default function LoginScreen() {
         <Text style={[styles.linkText, { color: theme.colors.primary, fontSize: fontSize.sm }]}>Não tem uma conta? Cadastre-se</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Home')}
-        style={styles.link}
-      >
-        <Text style={[styles.linkText, { color: theme.colors.primary, fontSize: fontSize.sm }]}>
-          Voltar para Home
-        </Text>
-      </TouchableOpacity>
-
       {loginSuccessTemporaryPassword && (
         <Text style={{ marginTop: 10, textAlign: 'center', color: theme.colors.primary, fontSize: fontSize.sm }}>
           Redirecionando para o Perfil para alterar a senha...
