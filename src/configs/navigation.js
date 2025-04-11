@@ -1,9 +1,11 @@
-//src\configs\navigation.js
-import React from "react";
+// src\configs\navigation.js
+
+import React, { useEffect } from "react";
 import { SafeAreaView, View, StyleSheet } from "react-native";
 import { createDrawerNavigator, DrawerItemList } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+import { CommonActions } from '@react-navigation/native';
 import { House, ArrowRightLeft, History, UserCog, Info, QrCode, LogIn } from "lucide-react-native";
 import { useTheme } from "../contexts/ThemeContext";
 import { useFontSettings } from "../contexts/FontContext";
@@ -26,7 +28,22 @@ const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// Navegação por abas
+// Wrapper (função que retorna um conjunto de navegação focada em uma única tela) - configurações
+function ConfigScreenWithTabs() {
+  return <ConfigScreen />;
+}
+
+// Wrapper - QRCode
+function QRCodeScreenWithTabs() {
+  return <QRCodeScannerScreen />;
+}
+
+// Wrapper - Login
+function LoginScreenWithTabs() {
+  return <LoginScreen />;
+}
+
+// Navegação por abas - menu inferior (Bottom Navigation)
 export function TabScreens() {
   return (
     <Tab.Navigator tabBar={(props) => <BottomNavigation {...props} />} screenOptions={{ headerShown: false }}>
@@ -39,7 +56,7 @@ export function TabScreens() {
   );
 }
 
-// Stack de autenticação  - Drawer
+// Stack de autenticação - navegação da área não autenticada
 export function AuthStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -50,10 +67,55 @@ export function AuthStack() {
   );
 }
 
-// Stack do app autenticado
+// Stack do app autenticado - navegação com o menu lateral (drawer), usada quando o usuário esta logado
 export function AppStack() {
   const theme = useTheme();
   const { fontSize, fontFamily } = useFontSettings();
+
+  // Criamos um componente para exibir o QRCode com bottom navigation
+  function QRCodeWithBottomNav() {
+    return (
+      <Tab.Navigator tabBar={(props) => <BottomNavigation {...props} />} screenOptions={{ headerShown: false }}>
+        <Tab.Screen name="QRCodeScreen" component={QRCodeScannerScreen} />
+        {/* Adicionamos as tabs normais, mas escondidas */}
+        <Tab.Screen name="HomeTab" component={HomeScreen} options={{ tabBarButton: () => null }} />
+        <Tab.Screen name="BeneficiosTab" component={BeneficiosScreen} options={{ tabBarButton: () => null }} />
+        <Tab.Screen name="HistoricoTab" component={HistoricoScreen} options={{ tabBarButton: () => null }} />
+        <Tab.Screen name="PerfilTab" component={PerfilScreen} options={{ tabBarButton: () => null }} />
+        <Tab.Screen name="SobreTab" component={SobreScreen} options={{ tabBarButton: () => null }} />
+      </Tab.Navigator>
+    );
+  }
+
+  // Criamos um componente para Config com bottom navigation
+  function ConfigWithBottomNav() {
+    return (
+      <Tab.Navigator tabBar={(props) => <BottomNavigation {...props} />} screenOptions={{ headerShown: false }}>
+        <Tab.Screen name="ConfigScreen" component={ConfigScreen} />
+        {/* Adicionamos as tabs normais, mas escondidas */}
+        <Tab.Screen name="HomeTab" component={HomeScreen} options={{ tabBarButton: () => null }} />
+        <Tab.Screen name="BeneficiosTab" component={BeneficiosScreen} options={{ tabBarButton: () => null }} />
+        <Tab.Screen name="HistoricoTab" component={HistoricoScreen} options={{ tabBarButton: () => null }} />
+        <Tab.Screen name="PerfilTab" component={PerfilScreen} options={{ tabBarButton: () => null }} />
+        <Tab.Screen name="SobreTab" component={SobreScreen} options={{ tabBarButton: () => null }} />
+      </Tab.Navigator>
+    );
+  }
+
+  // Criamos um componente para Login com bottom navigation
+  function LoginWithBottomNav() {
+    return (
+      <Tab.Navigator tabBar={(props) => <BottomNavigation {...props} />} screenOptions={{ headerShown: false }}>
+        <Tab.Screen name="LoginScreen" component={LoginScreen} />
+        {/* Adicionamos as tabs normais, mas escondidas */}
+        <Tab.Screen name="HomeTab" component={HomeScreen} options={{ tabBarButton: () => null }} />
+        <Tab.Screen name="BeneficiosTab" component={BeneficiosScreen} options={{ tabBarButton: () => null }} />
+        <Tab.Screen name="HistoricoTab" component={HistoricoScreen} options={{ tabBarButton: () => null }} />
+        <Tab.Screen name="PerfilTab" component={PerfilScreen} options={{ tabBarButton: () => null }} />
+        <Tab.Screen name="SobreTab" component={SobreScreen} options={{ tabBarButton: () => null }} />
+      </Tab.Navigator>
+    );
+  }
 
   return (
     <Drawer.Navigator
@@ -72,10 +134,10 @@ export function AppStack() {
         },
         drawerActiveBackgroundColor: 'transparent',
       }}
-      initialRouteName="Home"
+      initialRouteName="Main"
     >
       <Drawer.Screen
-        name="Home"
+        name="Main"
         component={TabScreens}
         options={{
           title: "Início",
@@ -85,7 +147,8 @@ export function AppStack() {
 
       <Drawer.Screen
         name="Perfil"
-        component={PerfilScreen}
+        component={TabScreens}
+        initialParams={{ screen: 'PerfilTab' }}
         options={{
           drawerIcon: () => <UserCog size={fontSize.md} color={theme.colors.primary} />,
         }}
@@ -93,7 +156,7 @@ export function AppStack() {
 
       <Drawer.Screen
         name="Login"
-        component={LoginScreen}
+        component={LoginWithBottomNav}
         options={{
           title: "Entrar",
           drawerIcon: () => <LogIn size={fontSize.md} color={theme.colors.primary} />,
@@ -102,7 +165,8 @@ export function AppStack() {
 
       <Drawer.Screen
         name="Troca"
-        component={BeneficiosScreen}
+        component={TabScreens}
+        initialParams={{ screen: 'BeneficiosTab' }}
         options={{
           drawerIcon: () => <ArrowRightLeft size={fontSize.md} color={theme.colors.primary} />,
         }}
@@ -110,7 +174,7 @@ export function AppStack() {
 
       <Drawer.Screen
         name="QrCode"
-        component={QRCodeScannerScreen}
+        component={QRCodeWithBottomNav}
         options={{
           drawerIcon: () => <QrCode size={fontSize.md} color={theme.colors.primary} />,
         }}
@@ -118,7 +182,8 @@ export function AppStack() {
 
       <Drawer.Screen
         name="Historico"
-        component={HistoricoScreen}
+        component={TabScreens}
+        initialParams={{ screen: 'HistoricoTab' }}
         options={{
           title: "Histórico",
           drawerIcon: () => <History size={fontSize.md} color={theme.colors.primary} />,
@@ -127,7 +192,8 @@ export function AppStack() {
 
       <Drawer.Screen
         name="Sobre"
-        component={SobreScreen}
+        component={TabScreens}
+        initialParams={{ screen: 'SobreTab' }}
         options={{
           drawerIcon: () => <Info size={fontSize.md} color={theme.colors.primary} />,
         }}
@@ -135,14 +201,13 @@ export function AppStack() {
 
       <Drawer.Screen
         name="Configurações"
-        component={ConfigScreen}
+        component={ConfigWithBottomNav}
         options={{
           drawerIcon: () => <UserCog size={fontSize.md} color={theme.colors.primary} />,
         }}
       />
     </Drawer.Navigator>
   );
-  
 }
 
 const styles = StyleSheet.create({
