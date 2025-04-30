@@ -21,7 +21,7 @@ import RegisterScreen from "../screens/RegisterScreen";
 import LoginScreen from "../screens/LoginScreen";
 import ForgotPasswordScreen from "../screens/ForgotPassword";
 import BottomNavigation from "../components/BottomNavigation";
-import Header from "../components/Header";
+import Header from "../components/header";
 import LogoutButton from "../components/LogoutButton";
 
 const Drawer = createDrawerNavigator();
